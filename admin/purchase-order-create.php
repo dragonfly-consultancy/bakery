@@ -231,14 +231,12 @@ $active_currency_code = get_active_currency_code();
                                             <?php echo load_products(); ?>
                                         </select>
                                     </div>
-                                    <div class="form-group" style="margin-right: 15px;width: 269px !important;display: none;align-items: center;">
-                                        <label class="sr-only">Quantity</label>
-                                        <div class="input-group" style="width: 100%;">
-                                            <input type="number" id="product_qty" class="form-control" placeholder="Qty" step="0.01" min="0.01" value="1.00">
-                                            <span class="input-group-addon" id="product_uom_display" style="min-width:48px;">&mdash;</span>
+                                        <div class="form-group" style="margin-right: 15px; display: flex; align-items: center;">
+                                            <label for="product_qty" class="control-label" style="margin-bottom:0; margin-right:8px; min-width:30px;">Qty</label>
+                                            <input type="number" id="product_qty" class="form-control" placeholder="Qty" step="0.01" min="0.01" value="1.00" style="width: 80px;">
+                                            <span class="input-group-addon" id="product_uom_display" style="min-width:48px; display:none;">&mdash;</span>
                                         </div>
-                                        <div style="display:none; font-size:11px;color:#7a8aa1;margin-top:4px; width:100%;" id="product_base_qty_preview">&nbsp;</div>
-                                    </div>
+                                        <div style="font-size:11px;color:#7a8aa1;margin-top:4px; width:100%; display:none;" id="product_base_qty_preview">&nbsp;</div>
                                     <div class="form-group" style="margin-right: 15px; width: 160px; display: flex; align-items: center;">
                                         <label class="sr-only">Order UOM</label>
                                         <select id="product_uom_select" class="form-control" disabled style="width: 100%;">
