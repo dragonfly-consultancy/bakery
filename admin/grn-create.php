@@ -73,6 +73,11 @@ $today = date('Y-m-d');
         .batch-split-table input { height: 28px; font-size: 12px; }
         .btn-add-batch-split { font-size: 11px; padding: 2px 8px; }
         .batch-split-container { background: #f5f5f5; padding: 8px; border-radius: 4px; }
+        .col-rate,
+        .col-line-net,
+        .col-line-gst {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="page-sidebar-closed-hide-logo page-content-white">
@@ -193,9 +198,10 @@ $today = date('Y-m-d');
                                             <th class="text-center" style="width: 10%; background: #357e30; color: white;"> UOM </th>
                                             <th class="text-center" style="width: 9%"> Batch No </th>
                                             <th class="text-center" style="width: 9%"> Expiry Date </th>
-                                            <th class="text-right" style="width: 7%">Rate <small style="font-weight:normal;opacity:.7;">(per base)</small></th>
-                                            <th class="text-right" style="width: 7%">Line Net</th>
-                                            <th class="text-right" style="width: 7%">Line GST</th>
+                                            <th class="text-right col-rate" style="width: 7%">Rate <small style="font-weight:normal;opacity:.7;">(per base)</small></th>
+                                            <th class="text-right col-line-net" style="width: 7%">Line Net</th>
+                                            <th class="text-right col-line-gst" style="width: 7%">Line GST</th>
+                                            <th class="text-center" style="width: 14%">Attachments (COA / Tech Spec or Fact Sheet)</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -289,14 +295,24 @@ $today = date('Y-m-d');
                                                         <?php if(!$isCompleted) { echo '<span class="text-muted">N/A</span>'; } ?>
                                                     <?php } ?>
                                                 </td>
-                                                <td class="text-right"><?php echo htmlspecialchars($active_currency_code); ?> <?php echo $rateVal; ?></td>
-                                                <td class="text-right"><span class="line-net" id="line_net_<?php echo $item['purchase_note_item_id']; ?>">0.00</span></td>
-                                                <td class="text-right"><span class="line-vat" id="line_vat_<?php echo $item['purchase_note_item_id']; ?>">0.00</span></td>
+                                                <td class="text-right col-rate"><?php echo htmlspecialchars($active_currency_code); ?> <?php echo $rateVal; ?></td>
+                                                <td class="text-right col-line-net"><span class="line-net" id="line_net_<?php echo $item['purchase_note_item_id']; ?>">0.00</span></td>
+                                                <td class="text-right col-line-gst"><span class="line-vat" id="line_vat_<?php echo $item['purchase_note_item_id']; ?>">0.00</span></td>
+                                                <td class="text-center">
+                                                    <?php if(!$isCompleted) { ?>
+                                                        <input type="file"
+                                                               name="line_attachment[]"
+                                                               class="form-control table-input line-attachment-input"
+                                                               accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif" />
+                                                    <?php } else { ?>
+                                                        <span class="text-muted">N/A</span>
+                                                    <?php } ?>
+                                                </td>
                                             </tr>
                                             <?php if(!$isCompleted && $isBatchTracked) { ?>
                                             <!-- Extra batch rows container for splitting into multiple batches -->
                                             <tr class="batch-extra-row-container" data-parent-pni="<?php echo $item['purchase_note_item_id']; ?>" style="display:none;">
-                                                <td colspan="12" style="padding: 0;"></td>
+                                                <td colspan="13" style="padding: 0;"></td>
                                             </tr>
                                             <?php } ?>
                                         <?php } ?>
@@ -304,7 +320,7 @@ $today = date('Y-m-d');
                                         <?php if(!$hasPending) { ?>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="12" class="text-center text-success bold" style="padding: 20px;">
+                                                    <td colspan="13" class="text-center text-success bold" style="padding: 20px;">
                                                         All items in this Purchase Note have been fully received!
                                                     </td>
                                                 </tr>

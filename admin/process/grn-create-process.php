@@ -23,6 +23,7 @@ $batchNos = $_POST['batch_no'] ?? [];
 $expiryDates = $_POST['expiry_date'] ?? [];
 $lineUomIds = $_POST['line_uom_id'] ?? [];
 $lineQtyPerUoms = $_POST['line_qty_per_uom'] ?? [];
+$lineAttachments = $_FILES['line_attachment'] ?? null;
 
 if ($purchaseNoteId <= 0) {
     redirect('purchase-order-list.php?message=' . urlencode('Invalid purchase note.') . '&type=error');
@@ -49,6 +50,7 @@ for ($i = 0; $i < count($purchaseNoteItemIds); $i++) {
     $qtyPerUom = (float) ($lineQtyPerUoms[$i] ?? 0);
     if ($itemId > 0 && $qty > 0) {
         $validLines[] = [
+            'source_index' => $i,
             'purchase_note_item_id' => $itemId,
             'received_qty' => $qty,
             'batch_no' => $batchNo,
@@ -86,9 +88,37 @@ if ($grnId <= 0) {
     redirectWithMessage($purchaseNoteId, 'Failed to create GRN.');
 }
 
+$lineAttachmentTable = $db->getRow("SHOW TABLES LIKE 'grn_line_attachments'");
+if (!$lineAttachmentTable) {
+    $db->insertRow("CREATE TABLE `grn_line_attachments` (
+        `line_attachment_id` INT(11) NOT NULL AUTO_INCREMENT,
+        `grn_h_id`           INT(11) NOT NULL,
+        `grn_d_id`           INT(11) NOT NULL,
+        `purchase_note_item_id` INT(11) NOT NULL,
+        `original_name`      VARCHAR(255) NOT NULL,
+        `stored_name`        VARCHAR(255) NOT NULL,
+        `file_path`          VARCHAR(500) NOT NULL,
+        `file_size`          INT(11) NOT NULL DEFAULT 0,
+        `uploaded_by`        VARCHAR(100) NOT NULL DEFAULT '',
+        `created_at`         DATETIME NOT NULL,
+        PRIMARY KEY (`line_attachment_id`),
+        KEY `idx_grn_h_id` (`grn_h_id`),
+        KEY `idx_grn_d_id` (`grn_d_id`),
+        KEY `idx_pni_id` (`purchase_note_item_id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", []);
+}
+
+$lineUploadDir = dirname(__DIR__) . '/uploads/grn_line_attachments/';
+if (!is_dir($lineUploadDir)) {
+    mkdir($lineUploadDir, 0755, true);
+}
+$lineAllowedExts = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png', 'gif'];
+$lineMaxBytes = 10 * 1024 * 1024;
+
 $transactionType = 1;
 
 foreach ($validLines as $line) {
+    $sourceIndex = (int) ($line['source_index'] ?? -1);
     $purchaseNoteItemId = $line['purchase_note_item_id'];
     $receivedQty = $line['received_qty'];
     $batchNo = $line['batch_no'];
@@ -170,6 +200,33 @@ foreach ($validLines as $line) {
         'INSERT INTO grn_details (grn_h_id, grn_d_item_id, purchase_note_item_id, grn_d_qty, grn_d_blance, grn_d_rate, grn_d_vat, grn_d_vat_rate, grn_d_total, batch_id, uom_id, qty_per_uom, grn_d_qty_base) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
         [$grnId, $productId, $purchaseNoteItemId, $receivedQty, $receivedQty, $rate, $vatAmount, $vatRate, $total, $batchId, $lineUomId, $lineQtyPerUom, $receivedQtyBase]
     );
+
+    $grnDetail = $db->getRow('SELECT grn_d_id FROM grn_details WHERE grn_h_id = ? AND purchase_note_item_id = ? ORDER BY grn_d_id DESC LIMIT 1', [$grnId, $purchaseNoteItemId]);
+    $grnDetailId = (int) ($grnDetail['grn_d_id'] ?? 0);
+
+    if (
+        $grnDetailId > 0 &&
+        is_array($lineAttachments) &&
+        isset($lineAttachments['name'][$sourceIndex]) &&
+        trim((string) $lineAttachments['name'][$sourceIndex]) !== '' &&
+        (int) ($lineAttachments['error'][$sourceIndex] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK
+    ) {
+        $fileSize = (int) ($lineAttachments['size'][$sourceIndex] ?? 0);
+        $tmpName = $lineAttachments['tmp_name'][$sourceIndex] ?? '';
+        $originalName = basename((string) $lineAttachments['name'][$sourceIndex]);
+        if ($fileSize > 0 && $fileSize <= $lineMaxBytes && is_uploaded_file($tmpName)) {
+            $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            if (in_array($ext, $lineAllowedExts, true)) {
+                $storedName = 'grn_line_' . $grnId . '_' . $grnDetailId . '_' . time() . '_' . $sourceIndex . '.' . $ext;
+                if (move_uploaded_file($tmpName, $lineUploadDir . $storedName)) {
+                    $db->insertRow(
+                        'INSERT INTO grn_line_attachments (grn_h_id, grn_d_id, purchase_note_item_id, original_name, stored_name, file_path, file_size, uploaded_by, created_at) VALUES (?,?,?,?,?,?,?,?,?)',
+                        [$grnId, $grnDetailId, $purchaseNoteItemId, $originalName, $storedName, 'uploads/grn_line_attachments/' . $storedName, $fileSize, $createdBy, $createdAt]
+                    );
+                }
+            }
+        }
+    }
 
     // FIFO is posted in BASE qty so stock is consistent across UOMs
     $db->insertRow(
