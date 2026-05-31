@@ -192,6 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData['customer_price_type_id'] = trim($_POST['customer_price_type_id'] ?? '');
     $formData['customer_note'] = trim($_POST['customer_note'] ?? '');
     $formData['customer_remarks'] = trim($_POST['customer_remarks'] ?? '');
+    $formData['customer_discount'] = isset($_POST['customer_discount']) && $_POST['customer_discount'] !== '' ? (float)$_POST['customer_discount'] : 0;
     $customerAccessFlags = normalizeCustomerStatusFlags($_POST);
     $formData['is_active'] = $customerAccessFlags['is_active'];
     $formData['locked'] = $customerAccessFlags['locked'];
@@ -392,7 +393,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $inserted = $db->insertRow(
                 'INSERT INTO customer (customer_code, customer_email, customer_password, is_active, locked, customer_title, customer_name, customer_nic, customer_avtive_code, customer_address, address_line_1, address_line_2, city, postal_code, customer_discount, customer_tell, customer_mobile, customer_note, customer_outstanding_balance, credit_limit, account_hold, abn_no, acn_no, vat_registered, gst_no, payment_terms_id, customer_logo, customer_price_type_id, new_customer, RepeatInterval, RepeatUnit, legal_name, trading_name, customer_remarks, min_order_amount, emergency_contact_name, emergency_contact_email, emergency_contact_telephone, custom_url_link, google_map_link, contact_name, contact_email, contact_telephone, line_discount_id)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, 0.00, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0.00, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 [
                     $formData['customer_code'] !== '' ? $formData['customer_code'] : null,
                     $formData['customer_email'] !== '' ? $formData['customer_email'] : null,
@@ -409,6 +410,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $formData['address_line_2'] !== '' ? $formData['address_line_2'] : null,
                     $formData['city'] !== '' ? $formData['city'] : null,
                     $formData['postal_code'] !== '' ? $formData['postal_code'] : null,
+                    isset($formData['customer_discount']) ? (float)$formData['customer_discount'] : 0,
                     $formData['customer_phone'] !== '' ? $formData['customer_phone'] : null,
                     $formData['customer_mobile'] !== '' ? $formData['customer_mobile'] : null,
                     $formData['customer_note'] !== '' ? $formData['customer_note'] : null,
@@ -838,6 +840,10 @@ if ($message !== '' && !$MessageClass) {
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Credit Limit</label>
                                                                             <input type="text" class="form-control autonumeric" name="credit_limit" placeholder="Credit Limit">
+                                                                        </div>
+                                                                        <div class="form-group" style="margin-bottom: 10px;">
+                                                                            <label class="control-label" style="font-weight: 600; color: #555;">Order Discount (%)</label>
+                                                                            <input type="number" class="form-control" name="customer_discount" placeholder="Discount" min="0" max="100" step="0.01">
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Line Discount (%)</label>

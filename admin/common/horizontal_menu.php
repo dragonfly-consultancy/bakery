@@ -306,6 +306,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
                 <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="batch-update.php"><i class="fa fa-tags"></i> Batch Update</a></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="item-master-bulk-upload.php"><i class="fa fa-upload"></i> Item Master Bulk Upload</a></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="discount-code.php"><i class="fa fa-tag"></i> Discount Code</a></li><?php } ?>
+                    <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="customer_product_discount.php"><i class="fa fa-percent"></i> Customer Product Discount</a></li><?php } ?>
                 <?php if ($canUserAdmin && (function_exists('hasPermission') ? hasPermission('settings.permissions') : true)) { ?><li class="divider"></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('users.create') : true) { ?><li><a href="add-user.php"><i class="fa fa-user-plus"></i> Add Backend User</a></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('users.view') : true) { ?><li><a href="manage-user.php"><i class="fa fa-users"></i> Manage Backend Users</a></li><?php } ?>
