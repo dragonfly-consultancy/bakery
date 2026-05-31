@@ -3226,7 +3226,75 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
         var preselectCustomerId = <?php echo (int)($_GET['customer_id'] ?? 0); ?>;
         if (preselectCustomerId) {
             // set the select and trigger change to load shipping addresses
-            $('#customerSelect').val(preselectCustomerId).trigger('change');
+            $('#customerSelect').val(preselectCustomerId).trigger('change.select2');
+            // Manually call the same logic as manual selection, but ensure address loads and default is selected
+            selectedCustomerId = preselectCustomerId;
+            $('#shippingSelect').empty().append('<option value="">Select shipping address...</option>');
+            $('#addressCard').addClass('hidden');
+            selectedShippingId = null;
+            orderDatesMap = {};
+            $('#dateLegend').hide();
+            resetToNewOrder();
+            $('#quickSearchProduct').val('').prop('disabled', true);
+            if (flatpickrInstance) {
+                flatpickrInstance.clear();
+                flatpickrInstance.redraw();
+            }
+            loadCustomerOrderDiscount(selectedCustomerId, function(discount) {
+                setOrderDiscountInputValue(discount);
+                updateTotals();
+            });
+            loadCustomerLineDiscount(selectedCustomerId, function() {
+                applyActiveCustomerLineDiscountToCart();
+                renderCart();
+            });
+            $('#redirectToStandingOrder').prop('disabled', false);
+            if (flatpickrInstance) {
+                flatpickrInstance.set('clickOpens', true);
+                document.getElementById('deliveryDatePicker').disabled = false;
+            }
+            // Load shipping addresses and select default
+            $.ajax({
+                url: '',
+                method: 'POST',
+                data: { action: 'get_customer_shipping_addresses', customer_id: selectedCustomerId },
+                dataType: 'json',
+                success: function(addresses) {
+                    if (addresses && addresses.length > 0) {
+                        var defaultSet = false;
+                        addresses.forEach(function(addr, idx) {
+                            var label = addr.address_label || addr.address_line_1;
+                            var def = addr.is_default == 1 ? ' (Default)' : '';
+                            var selected = '';
+                            if (addr.is_default == 1 && !defaultSet) { selected = ' selected'; defaultSet = true; }
+                            if (!defaultSet && idx === 0) { selected = ' selected'; }
+                            $('#shippingSelect').append('<option value="' + addr.id + '"' + selected + '>' + label + def + '</option>');
+                        });
+                        $('#shippingSelect').prop('disabled', false);
+                        $('#btnEditAddress').prop('disabled', false);
+                        $('#shippingSelect').trigger('change');
+                    } else {
+                        $('#shippingSelect').prop('disabled', true);
+                        $('#btnEditAddress').prop('disabled', true);
+                        showToast('No shipping addresses found for this customer', 'error');
+                    }
+                    $('#cartSection').removeClass('disabled-section');
+                    $('#bcSearchWrap').show();
+                    renderCart();
+                    updateQuickSearchState();
+                },
+                error: function() {
+                    showToast('Error loading addresses', 'error');
+                }
+            });
+            loadOrderDatesForCalendar();
+            loadProductsForQuickSearch();
+            setTimeout(function() {
+                $('#deliveryDatePicker').prop('disabled', false).prop('readonly', false).val("");
+                $('#orderDate').val("");
+                $('#shippingSelect').prop('disabled', false).removeClass('disabled-section');
+                $('#btnEditAddress').prop('disabled', false);
+            }, 500);
         }
 
         // If page opened with ?invoice_id=.. then auto-load that order for editing
@@ -3557,13 +3625,20 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
                 dataType: 'json',
                 success: function(addresses) {
                     if (addresses && addresses.length > 0) {
-                        addresses.forEach(function(addr) {
+                        var defaultSet = false;
+                        addresses.forEach(function(addr, idx) {
                             var label = addr.address_label || addr.address_line_1;
                             var def = addr.is_default == 1 ? ' (Default)' : '';
-                            $('#shippingSelect').append('<option value="' + addr.id + '"' + (addr.is_default == 1 ? ' selected' : '') + '>' + label + def + '</option>');
+                            var selected = '';
+                            if (addr.is_default == 1 && !defaultSet) { selected = ' selected'; defaultSet = true; }
+                            // If no default, select the first address
+                            if (!defaultSet && idx === 0) { selected = ' selected'; }
+                            $('#shippingSelect').append('<option value="' + addr.id + '"' + selected + '>' + label + def + '</option>');
                         });
-                        $('#shippingSelect').prop('disabled', false).trigger('change');
+                        $('#shippingSelect').prop('disabled', false);
                         $('#btnEditAddress').prop('disabled', false);
+                        // Trigger change so address card updates
+                        $('#shippingSelect').trigger('change');
                     } else {
                         $('#shippingSelect').prop('disabled', true);
                         $('#btnEditAddress').prop('disabled', true);

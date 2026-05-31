@@ -255,9 +255,9 @@ else
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th class="all">Customer id</th>
+                                                <!-- <th class="all">Customer id</th> -->
                                                 <th class="all">Customer Code</th>
-                                                <th class="all">Customer Name</th>
+                                                <th class="all" style="width: 120px; white-space: nowrap;">Customer Name</th>
                                                 <th class="all">Landline</th>
                                                 <th class="all">Mobile</th>
                                                 <th class="all">Email</th>
@@ -276,14 +276,14 @@ else
    
                                              <tr>
                                                 <th></th>
-                                                <td><?php echo  $query['customer_id']; ?></td>
+                                                <!-- <td><?php echo  $query['customer_id']; ?></td> -->
                                                 <td><?php echo  $query['customer_code']; ?></td>
-                                                <td><?php  echo  $query['customer_name']; ?></td>
-                                                <td><?php  echo  $query['customer_tell']; ?></td>
-                                                 <td><?php  echo  $query['customer_mobile']; ?></td>
+                                                <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?php  echo  $query['customer_name']; ?></td>
+                                                <td style="white-space: nowrap;"><?php  echo  $query['customer_tell']; ?></td>
+                                                <td style="white-space: nowrap;"><?php  echo  $query['customer_mobile']; ?></td>
                                                 <td><?php  echo  $query['customer_email']; ?></td>
                                                 <td><?php echo  $query['customer_nic']; ?> </td>
-                                                <td>
+                                                <td style="white-space: nowrap;">
                                                     <span class="label <?php echo $isActive ? 'label-success' : 'label-warning'; ?>">
                                                         <?php echo $isActive ? 'Active' : 'Pending'; ?>
                                                     </span>
