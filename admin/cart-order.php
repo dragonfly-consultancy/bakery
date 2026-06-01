@@ -67,11 +67,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 exit;
             }
 
+            $hasLineDiscountActiveColumn = (bool) $db->getRow("SHOW COLUMNS FROM customer LIKE 'line_discount_active'");
             $hasLineDiscountPercentageColumn = (bool) $db->getRow("SHOW COLUMNS FROM customer LIKE 'line_discount_percentage'");
             $hasLineDiscountColumn = (bool) $db->getRow("SHOW COLUMNS FROM customer LIKE 'line_discount_id'");
             $hasDiscountTable = (bool) $db->getRow("SHOW TABLES LIKE 'discount_code'");
 
             $discount = 0.0;
+
+            if ($hasLineDiscountActiveColumn) {
+                $activeRow = $db->getRow('SELECT COALESCE(line_discount_active, 0) AS line_discount_active FROM customer WHERE customer_id = ? LIMIT 1', [$customerId]);
+                if ((int) ($activeRow['line_discount_active'] ?? 0) !== 1) {
+                    echo json_encode(['status' => 'success', 'discount' => 0]);
+                    exit;
+                }
+            }
 
             if ($hasLineDiscountPercentageColumn) {
                 $row = $db->getRow('SELECT line_discount_percentage FROM customer WHERE customer_id = ? LIMIT 1', [$customerId]);
@@ -619,6 +628,7 @@ function getCustomerLineDiscountMap() {
     $result = [];
 
     try {
+        $hasLineDiscountActiveColumn = (bool) $db->getRow("SHOW COLUMNS FROM customer LIKE 'line_discount_active'");
         $hasLineDiscountPercentageColumn = (bool) $db->getRow("SHOW COLUMNS FROM customer LIKE 'line_discount_percentage'");
         $hasLineDiscountColumn = (bool) $db->getRow("SHOW COLUMNS FROM customer LIKE 'line_discount_id'");
         $hasDiscountTable = (bool) $db->getRow("SHOW TABLES LIKE 'discount_code'");
@@ -631,9 +641,13 @@ function getCustomerLineDiscountMap() {
             $lineDiscountPercentageExpr = $hasLineDiscountPercentageColumn
                 ? "COALESCE(NULLIF(c.line_discount_percentage, ''), 0)"
                 : "0";
+            $lineDiscountActiveExpr = $hasLineDiscountActiveColumn
+                ? "COALESCE(c.line_discount_active, 0)"
+                : "1";
 
             $rows = $db->getRows(
                 "SELECT c.customer_id,
+                        {$lineDiscountActiveExpr} AS line_discount_active,
                         {$lineDiscountPercentageExpr} AS customer_line_discount_percentage,
                         COALESCE(dc.percentage, 0) AS line_discount_percentage
                  FROM customer c
@@ -643,9 +657,13 @@ function getCustomerLineDiscountMap() {
             $lineDiscountPercentageExpr = $hasLineDiscountPercentageColumn
                 ? "COALESCE(NULLIF(c.line_discount_percentage, ''), 0)"
                 : "0";
+            $lineDiscountActiveExpr = $hasLineDiscountActiveColumn
+                ? "COALESCE(c.line_discount_active, 0)"
+                : "1";
 
             $rows = $db->getRows(
                 "SELECT c.customer_id,
+                        {$lineDiscountActiveExpr} AS line_discount_active,
                         {$lineDiscountPercentageExpr} AS customer_line_discount_percentage,
                         0 AS line_discount_percentage
                  FROM customer c"
@@ -657,9 +675,66 @@ function getCustomerLineDiscountMap() {
             if ($customerId <= 0) {
                 continue;
             }
+            $lineDiscountActive = (int) ($row['line_discount_active'] ?? 0);
+            if ($lineDiscountActive !== 1) {
+                $result[$customerId] = 0;
+                continue;
+            }
             $customerLineDiscount = (float) ($row['customer_line_discount_percentage'] ?? 0);
             $lineDiscount = (float) ($row['line_discount_percentage'] ?? 0);
             $result[$customerId] = ($customerLineDiscount > 0) ? $customerLineDiscount : $lineDiscount;
+        }
+    } catch (Exception $e) {
+        // ignore and keep fallback empty map
+    }
+
+    return $result;
+}
+
+function getCustomerProductDiscountMap() {
+    $db = new Database();
+    $result = [];
+
+    try {
+        $hasTable = (bool) $db->getRow("SHOW TABLES LIKE 'customer_product_discount'");
+        if (!$hasTable) {
+            return $result;
+        }
+
+        $hasProductIdColumn = (bool) $db->getRow("SHOW COLUMNS FROM customer_product_discount LIKE 'product_id'");
+        $hasItemIdColumn = (bool) $db->getRow("SHOW COLUMNS FROM customer_product_discount LIKE 'item_id'");
+
+        $productColumn = $hasProductIdColumn ? 'product_id' : ($hasItemIdColumn ? 'item_id' : '');
+        if ($productColumn === '') {
+            return $result;
+        }
+
+        $rows = $db->getRows(
+            "SELECT customer_id, {$productColumn} AS product_id, COALESCE(discount_percentage, 0) AS discount_percentage
+             FROM customer_product_discount
+               WHERE (COALESCE(is_active, 0) = 1 OR LOWER(TRIM(CAST(is_active AS CHAR))) = 'active')"
+        );
+
+        foreach ($rows as $row) {
+            $customerId = (int) ($row['customer_id'] ?? 0);
+            $productId = (int) ($row['product_id'] ?? 0);
+            if ($customerId <= 0 || $productId <= 0) {
+                continue;
+            }
+
+            if (!isset($result[$customerId]) || !is_array($result[$customerId])) {
+                $result[$customerId] = [];
+            }
+
+            $discount = (float) ($row['discount_percentage'] ?? 0);
+            if ($discount < 0) {
+                $discount = 0;
+            }
+            if ($discount > 100) {
+                $discount = 100;
+            }
+
+            $result[$customerId][$productId] = $discount;
         }
     } catch (Exception $e) {
         // ignore and keep fallback empty map
@@ -710,6 +785,7 @@ $customers = getCustomers();
 $categories = getCategories();
 $gstRateMap = getGstRateMap();
 $customerLineDiscountMap = getCustomerLineDiscountMap();
+$customerProductDiscountMap = getCustomerProductDiscountMap();
 $customerOrderDiscountMap = getCustomerOrderDiscountMap();
 $deliveryRoutes = getDeliveryRoutes();
 $payment_methods = getPaymentMethods();
@@ -1482,6 +1558,11 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
         }
 
         .cart-table .col-discount {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .cart-table .col-product-discount {
             text-align: right;
             white-space: nowrap;
         }
@@ -2450,6 +2531,24 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             background: #fff;
             border-color: #d1d5db;
         }
+        .bc-toolbar-btn.primary-cta {
+            background: #2563eb;
+            border-color: #1d4ed8;
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }
+        .bc-toolbar-btn.primary-cta:hover:not(:disabled) {
+            background: #1d4ed8;
+            border-color: #1e40af;
+            color: #ffffff;
+        }
+        .bc-toolbar-btn.primary-cta:disabled {
+            background: #93c5fd;
+            border-color: #93c5fd;
+            color: #eaf2ff;
+            opacity: 0.9;
+        }
         .bc-toolbar-btn:disabled {
             opacity: 0.45;
             cursor: not-allowed;
@@ -2811,7 +2910,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
 
                         <!-- BC-style toolbar -->
                         <div class="bc-toolbar">
-                            <button type="button" class="bc-toolbar-btn" id="bcBtnNewLine" disabled>
+                            <button type="button" class="bc-toolbar-btn primary-cta" id="bcBtnNewLine" disabled>
                                 <i class="fa fa-plus"></i> New Line
                             </button>
                             <button type="button" class="bc-toolbar-btn" id="bcBtnDeleteLine" disabled>
@@ -2841,6 +2940,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
                                     <th>Item Code</th>
                                     <th style="text-align:right">Unit Price</th>
                                     <th style="text-align:right">Disc %</th>
+                                    <th style="text-align:right">Product Disc %</th>
                                     <th style="text-align:center">GST</th>
                                     <th style="text-align:center">SO</th>
                                     <th style="text-align:center; min-width:90px;">Quantity</th>
@@ -2850,7 +2950,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
                             </thead>
                             <tbody id="cartTableBody">
                                 <tr>
-                                    <td colspan="10">
+                                    <td colspan="11">
                                         <div class="cart-empty">
                                             <div class="cart-empty-icon"><i class="fa fa-shopping-basket"></i></div>
                                             <h3>Your cart is empty</h3>
@@ -2987,6 +3087,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
         var currencySymbol = '<?php echo $CURRENCY_SYMBOL; ?>';
         var gstRateMap = <?php echo json_encode($gstRateMap, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE); ?> || {};
         var customerLineDiscountMap = <?php echo json_encode($customerLineDiscountMap, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE); ?> || {};
+        var customerProductDiscountMap = <?php echo json_encode($customerProductDiscountMap, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE); ?> || {};
         var customerOrderDiscountMap = <?php echo json_encode($customerOrderDiscountMap, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE); ?> || {};
         var canEditOrderDiscount = <?php echo $canEditOrderDiscount ? 'true' : 'false'; ?>;
         var lockedOrderDiscountPercent = 0;
@@ -3015,6 +3116,41 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
 
         function getActiveCustomerLineDiscountPercent() {
             return getCustomerLineDiscountPercent(selectedCustomerId);
+        }
+
+        function getCustomerProductDiscountPercent(customerId, productId) {
+            var customerKey = (customerId || '').toString().trim();
+            var productKey = (productId || '').toString().trim();
+            if (!customerKey || !productKey) return 0;
+
+            var customerBucket = customerProductDiscountMap[customerKey];
+            if (!customerBucket) {
+                var numericCustomerId = parseInt(customerKey, 10);
+                if (isFinite(numericCustomerId)) {
+                    customerBucket = customerProductDiscountMap[numericCustomerId];
+                }
+            }
+
+            if (!customerBucket || typeof customerBucket !== 'object') {
+                return 0;
+            }
+
+            if (Object.prototype.hasOwnProperty.call(customerBucket, productKey)) {
+                var byString = parseFloat(customerBucket[productKey]);
+                return isFinite(byString) ? Math.max(0, Math.min(100, byString)) : 0;
+            }
+
+            var numericProductId = parseInt(productKey, 10);
+            if (isFinite(numericProductId) && Object.prototype.hasOwnProperty.call(customerBucket, numericProductId)) {
+                var byNumber = parseFloat(customerBucket[numericProductId]);
+                return isFinite(byNumber) ? Math.max(0, Math.min(100, byNumber)) : 0;
+            }
+
+            return 0;
+        }
+
+        function getActiveCustomerProductDiscountPercent(productId) {
+            return getCustomerProductDiscountPercent(selectedCustomerId, productId);
         }
 
         function getCustomerOrderDiscountPercent(customerId) {
@@ -4147,11 +4283,22 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             return gstRate.toFixed(2) + '%';
         }
 
+        function getEffectiveLineDiscountPercent(item) {
+            var lineDiscount = parseFloat(item && item.discount) || 0;
+            lineDiscount = Math.min(100, Math.max(0, lineDiscount));
+
+            var productId = (item && item.id) ? item.id : 0;
+            var productDiscount = getActiveCustomerProductDiscountPercent(productId);
+            productDiscount = Math.min(100, Math.max(0, parseFloat(productDiscount) || 0));
+
+            var totalDiscount = lineDiscount + productDiscount;
+            return Math.min(100, Math.max(0, totalDiscount));
+        }
+
         function calculateLineNet(item) {
             var price = parseFloat(item && item.price) || 0;
             var qty = parseFloat(item && item.qty) || 0;
-            var discount = parseFloat(item && item.discount) || 0;
-            discount = Math.min(100, Math.max(0, discount));
+            var discount = getEffectiveLineDiscountPercent(item);
             return price * qty * (1 - (discount / 100));
         }
 
@@ -4230,6 +4377,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             $('#inlineItemCodeCell').text('-');
             $('#inlineItemPriceInput').val('').attr('placeholder', '-').prop('readonly', true);
             $('#inlineItemDiscountInput').val('0').prop('readonly', false);
+            $('#inlineItemProductDiscountCell').text('-');
             $('#inlineItemGstCell').text('-');
             $('#inlineItemQtyInput').val(1);
             $('#inlineItemTotalCell').text('-');
@@ -4261,6 +4409,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             $('#inlineItemCodeCell').text(item.code || '-');
             $('#inlineItemPriceInput').val(currentPrice.toFixed(2)).prop('readonly', false);
             $('#inlineItemDiscountInput').val(currentDiscount.toFixed(2)).prop('readonly', isGiftItem(item));
+            $('#inlineItemProductDiscountCell').text(getActiveCustomerProductDiscountPercent(item.id).toFixed(2) + '%');
             $('#inlineItemGstCell').text(formatGstPercentByCode(item.gst_code));
             $('#inlineItemQtyInput').val(currentQty);
             $('#bcInlineCommitBtn').addClass('visible');
@@ -4274,6 +4423,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             $('#inlineItemNoInput').val(p.name + ' (' + p.code + ')');
             $('#inlineItemCodeCell').text(p.code);
             $('#inlineItemPriceInput').val(tierPrice.toFixed(2)).prop('readonly', false);
+            $('#inlineItemProductDiscountCell').text(getActiveCustomerProductDiscountPercent(p.id).toFixed(2) + '%');
             $('#inlineItemGstCell').text(formatGstPercentByCode(p.gst_code));
             updateInlineTotal();
             $('#bcInlineCommitBtn').addClass('visible');
@@ -4287,6 +4437,8 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             var price = parseFloat($('#inlineItemPriceInput').val()) || 0;
             var qty = parseEditableQty($('#inlineItemQtyInput').val());
             var discount = parseFloat($('#inlineItemDiscountInput').val()) || 0;
+            var productDiscount = getActiveCustomerProductDiscountPercent(inlineSelectedProduct.id);
+            var effectiveDiscount = Math.min(100, Math.max(0, discount + productDiscount));
 
             if (qty === null) {
                 $('#inlineItemTotalCell').text('-');
@@ -4294,7 +4446,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             }
 
             var gstRate = getGstRateByCode(inlineSelectedProduct.gst_code || '');
-            var lineNet = price * qty * (1 - discount / 100);
+            var lineNet = price * qty * (1 - effectiveDiscount / 100);
             var lineTotal = lineNet + (lineNet * gstRate / 100);
             $('#inlineItemTotalCell').text(currencySymbol + lineTotal.toFixed(2));
         }
@@ -4443,6 +4595,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             $('#bcInlineCommitBtn').removeClass('visible');
             $('#inlineItemCodeCell').text('-');
             $('#inlineItemPriceInput').val('').attr('placeholder', '-').prop('readonly', true);
+            $('#inlineItemProductDiscountCell').text('-');
             $('#inlineItemGstCell').text('-');
             $('#inlineItemTotalCell').text('-');
 
@@ -4765,6 +4918,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
                 '<td class="col-code" id="inlineItemCodeCell" style="color:#6b7280; font-size:12px;">-</td>' +
                 '<td class="col-price"><input type="number" id="inlineItemPriceInput" class="item-price-input" style="width:80px;" min="0" step="0.01" value="" readonly placeholder="-"></td>' +
                 '<td class="col-discount"><input type="number" id="inlineItemDiscountInput" class="inline-discount-input" min="0" max="100" step="0.01" value="' + getActiveCustomerLineDiscountPercent().toFixed(2) + '" placeholder="0"></td>' +
+                '<td class="col-product-discount" id="inlineItemProductDiscountCell">-</td>' +
                 '<td class="col-gst" id="inlineItemGstCell">-</td>' +
                 '<td class="col-so">-</td>' +
                 '<td class="col-ordered"><input type="number" id="inlineItemQtyInput" class="inline-qty-input" min="1" value="1"></td>' +
@@ -4776,17 +4930,17 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
 
             if (cart.length === 0) {
                 $('#cartTableBody').html(
-                    '<tr><td colspan="10">' +
+                    (canAdd && showInlineRow ? inlineRowHtml : '') +
+                    '<tr><td colspan="11">' +
                     '<div class="cart-empty">' +
                     '<div class="cart-empty-icon"><i class="fa fa-shopping-basket"></i></div>' +
                     '<h3>Your cart is empty</h3>' +
                     '<p>Select a customer and click <strong>+ New Line</strong> to add products</p>' +
-                    '</div></td></tr>' +
-                    (canAdd && showInlineRow ? inlineRowHtml : '')
+                    '</div></td></tr>'
                 );
                 $('#btnCheckout').prop('disabled', true);
             } else {
-                var html = '';
+                var html = (canAdd && showInlineRow && editingLineIndex === null) ? inlineRowHtml : '';
                 cart.forEach(function(item, idx) {
                     var isCartItem = item.is_cart_item == 1;
                     var isOriginal = item.is_original === true;
@@ -4818,6 +4972,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
                     }
                     rowDiscount = Math.min(100, Math.max(0, rowDiscount));
                     item.discount = rowDiscount;
+                    var productDiscount = getActiveCustomerProductDiscountPercent(item.id);
 
                     // Tier badge: show if a tier is active (price differs from base)
                     var tierBadge = '';
@@ -4834,6 +4989,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
                             '<td class="col-code">' + escapeHtml(item.code) + '</td>' +
                             '<td class="col-price"><input type="number" class="item-price-input" min="0" step="0.01" value="' + item.price.toFixed(2) + '">' + tierBadge + '</td>' +
                             '<td class="col-discount"><span class="discount-label">' + rowDiscount.toFixed(2) + '%</span></td>' +
+                            '<td class="col-product-discount"><span class="discount-label">' + productDiscount.toFixed(2) + '%</span></td>' +
                             '<td class="col-gst">' + formatGstPercentByCode(item.gst_code) + '</td>' +
                             '<td class="col-so">' + soQty + '</td>' +
                             '<td class="col-ordered"><input type="number" class="qty-input" min="1" value="' + item.qty + '"></td>' +
@@ -4849,7 +5005,6 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
                         html += inlineRowHtml;
                     }
                 });
-                html += (canAdd && showInlineRow && editingLineIndex === null) ? inlineRowHtml : '';
                 $('#cartTableBody').html(html);
                 $('#btnCheckout').prop('disabled', false);
             }
@@ -5116,7 +5271,10 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
             }
             // Enforce minimum cart order from active delivery rule.
             if (currentDeliveryRule && currentDeliveryRule.min_cart > 0) {
-                var subForGuard = cart.reduce(function(s, i) { return s + (i.price * i.qty * (1 - ((i.discount || 0) / 100))); }, 0);
+                var subForGuard = cart.reduce(function(s, i) {
+                    var effectiveDiscount = getEffectiveLineDiscountPercent(i);
+                    return s + (i.price * i.qty * (1 - (effectiveDiscount / 100)));
+                }, 0);
                 if (subForGuard < currentDeliveryRule.min_cart) {
                     e.preventDefault();
                     showToast('Minimum cart order for delivery is ' + currencySymbol + currentDeliveryRule.min_cart.toFixed(2), 'error');

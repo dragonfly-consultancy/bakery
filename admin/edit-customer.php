@@ -273,6 +273,11 @@ try {
         $db->insertRow("ALTER TABLE customer ADD COLUMN line_discount_id INT(10) NULL DEFAULT NULL");
     }
 
+    $lineDiscountActiveCol = $db->getRow("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'customer' AND COLUMN_NAME = 'line_discount_active'");
+    if (!$lineDiscountActiveCol) {
+        $db->insertRow("ALTER TABLE customer ADD COLUMN line_discount_active TINYINT(1) NOT NULL DEFAULT 0");
+    }
+
     $lineDiscountPctCol = $db->getRow("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'customer' AND COLUMN_NAME = 'line_discount_percentage'");
     if (!$lineDiscountPctCol) {
         $db->insertRow("ALTER TABLE customer ADD COLUMN line_discount_percentage DECIMAL(10,2) NULL DEFAULT NULL");
@@ -371,6 +376,7 @@ $formData = [
     'is_active' => (int) ($customer['is_active'] ?? 1),
     'locked' => (int) ($customer['locked'] ?? 0),
     'customer_discount' => $customer['customer_discount'] ?? '',
+    'line_discount_active' => (int) ($customer['line_discount_active'] ?? 0),
     'line_discount_id' => $customer['line_discount_id'] ?? '',
     'outstanding_balance' => $customer['customer_outstanding_balance'] ?? '',
     'repeat_interval' => $customer['RepeatInterval'] ?? '',
@@ -562,7 +568,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData['is_active'] = $customerAccessFlags['is_active'];
     $formData['locked'] = $customerAccessFlags['locked'];
     $formData['customer_discount'] = trim($_POST['customer_discount'] ?? '');
+    $formData['line_discount_active'] = isset($_POST['line_discount_active']) ? 1 : 0;
     $formData['line_discount_id'] = trim($_POST['line_discount_id'] ?? '');
+    if (!$formData['line_discount_active']) {
+        $formData['line_discount_id'] = '';
+    }
     $formData['outstanding_balance'] = trim($_POST['outstanding_balance'] ?? '');
     $formData['repeat_interval'] = trim($_POST['repeat_interval'] ?? '');
     $formData['repeat_unit'] = trim($_POST['repeat_unit'] ?? '');
@@ -797,7 +807,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         try {
             $lineDiscountPercentageValue = null;
-            if ($formData['line_discount_id'] !== '') {
+            if ($formData['line_discount_active'] && $formData['line_discount_id'] !== '') {
                 $selectedLineDiscount = $db->getRow('SELECT percentage FROM discount_code WHERE id = ? LIMIT 1', [(int)$formData['line_discount_id']]);
                 if ($selectedLineDiscount && isset($selectedLineDiscount['percentage']) && is_numeric($selectedLineDiscount['percentage'])) {
                     $lineDiscountPercentageValue = number_format((float)$selectedLineDiscount['percentage'], 2, '.', '');
@@ -841,6 +851,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'emergency_contact_telephone' => $formData['emergency_contact_telephone'] !== '' ? $formData['emergency_contact_telephone'] : null,
                 'custom_url_link' => $formData['custom_url_link'] !== '' ? $formData['custom_url_link'] : null,
                 'google_map_link' => $formData['google_map_link'] !== '' ? $formData['google_map_link'] : null,
+                'line_discount_active' => (int)$formData['line_discount_active'],
                 'line_discount_id' => $formData['line_discount_id'] !== '' ? (int)$formData['line_discount_id'] : null,
                 'line_discount_percentage' => $lineDiscountPercentageValue,
                 'contact_name' => $formData['contact_name'] !== '' ? $formData['contact_name'] : null,
@@ -1468,8 +1479,13 @@ foreach ($countries as $country) {
                                                                             <input type="number" class="form-control" name="customer_discount" value="<?php echo h($formData['customer_discount']); ?>" placeholder="Discount" min="0" max="100" step="0.01">
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
+                                                                            <div class="checkbox-list" style="margin-bottom: 8px;">
+                                                                                <label class="checkbox-inline" style="font-weight: 600; color: #555; padding-left: 0;">
+                                                                                    <input type="checkbox" id="line_discount_active" name="line_discount_active" value="1" <?php echo !empty($formData['line_discount_active']) ? 'checked' : ''; ?>> Line Discount Active
+                                                                                </label>
+                                                                            </div>
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Line Discount (%)</label>
-                                                                            <select class="form-control select2" name="line_discount_id">
+                                                                            <select class="form-control select2" id="line_discount_id" name="line_discount_id" <?php echo empty($formData['line_discount_active']) ? 'disabled' : ''; ?>>
                                                                                 <option value="">-- No Line Discount --</option>
                                                                                 <?php foreach ($discountCodes as $dc): ?>
                                                                                     <option value="<?php echo (int)$dc['id']; ?>" <?php echo ((string)$formData['line_discount_id'] === (string)$dc['id']) ? 'selected' : ''; ?>>
@@ -2881,6 +2897,17 @@ foreach ($countries as $country) {
                 try { $('.select2').select2(); } catch (e) { console.warn('select2 init failed', e); }
                 try { $('.summernote').summernote(); } catch (e) { console.warn('summernote init failed', e); }
                 try { $('.autonumeric').autoNumeric('init', {aSep: ',', aDec: '.', mDec: 2}); } catch (e) { console.warn('autonumeric init failed', e); }
+
+                function toggleLineDiscount() {
+                    var isActive = $('#line_discount_active').is(':checked');
+                    $('#line_discount_id').prop('disabled', !isActive).trigger('change.select2');
+                }
+
+                $('#line_discount_active').on('change', function() {
+                    toggleLineDiscount();
+                });
+
+                toggleLineDiscount();
 
                 // --- Per-shipping-address Delivery Route Group filter ---
                 // When the group dropdown changes, hide/show route <option>s in the route <select>

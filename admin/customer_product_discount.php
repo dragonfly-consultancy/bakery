@@ -52,8 +52,14 @@ if (isset($_GET['editID']) && intval($_GET['editID']) > 0) {
     $editRecord = $db->getRow('SELECT * FROM customer_product_discount WHERE id = ?', [intval($_GET['editID'])]);
 }
 // ── Fetch customers and products for dropdowns ────────────────────────────────
-$customers = $db->getRows('SELECT customer_id, customer_name FROM customer WHERE COALESCE(is_active,0)=1 AND COALESCE(locked,0)=0 ORDER BY customer_name ASC');
-$products  = $db->getRows('SELECT item_id, item_name FROM item_master ORDER BY item_name ASC');
+$customers = $db->getRows('SELECT customer_id, customer_name FROM customer WHERE customer_name IS NOT NULL AND customer_name <> "" ORDER BY customer_name ASC');
+if (empty($customers)) {
+    $customers = $db->getRows('SELECT customer_id, customer_name FROM customer ORDER BY customer_name ASC');
+}
+$products = $db->getRows('SELECT item_id, item_name FROM item_master WHERE item_name IS NOT NULL AND item_name <> "" ORDER BY item_name ASC');
+if (empty($products)) {
+    $products = $db->getRows('SELECT item_id, item_name FROM item_master ORDER BY item_name ASC');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -158,7 +164,10 @@ $products  = $db->getRows('SELECT item_id, item_name FROM item_master ORDER BY i
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Customer <span class="required">*</span></label>
-                        <select name="customer_id" class="form-control" required>
+                        <input type="text" id="add_customer_search" class="form-control" placeholder="Type to search customer">
+                    </div>
+                    <div class="form-group">
+                        <select name="customer_id" id="add_customer_id" class="form-control" required>
                             <option value="">Select Customer</option>
                             <?php foreach ($customers as $c): ?>
                                 <option value="<?php echo $c['customer_id']; ?>"><?php echo htmlspecialchars($c['customer_name']); ?></option>
@@ -167,7 +176,10 @@ $products  = $db->getRows('SELECT item_id, item_name FROM item_master ORDER BY i
                     </div>
                     <div class="form-group">
                         <label>Product <span class="required">*</span></label>
-                        <select name="product_id" class="form-control" required>
+                        <input type="text" id="add_product_search" class="form-control" placeholder="Type to search product">
+                    </div>
+                    <div class="form-group">
+                        <select name="product_id" id="add_product_id" class="form-control" required>
                             <option value="">Select Product</option>
                             <?php foreach ($products as $p): ?>
                                 <option value="<?php echo $p['item_id']; ?>"><?php echo htmlspecialchars($p['item_name']); ?></option>
@@ -208,6 +220,9 @@ $products  = $db->getRows('SELECT item_id, item_name FROM item_master ORDER BY i
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Customer <span class="required">*</span></label>
+                        <input type="text" id="edit_customer_search" class="form-control" placeholder="Type to search customer">
+                    </div>
+                    <div class="form-group">
                         <select name="customer_id" id="edit_customer_id" class="form-control" required>
                             <option value="">Select Customer</option>
                             <?php foreach ($customers as $c): ?>
@@ -217,6 +232,9 @@ $products  = $db->getRows('SELECT item_id, item_name FROM item_master ORDER BY i
                     </div>
                     <div class="form-group">
                         <label>Product <span class="required">*</span></label>
+                        <input type="text" id="edit_product_search" class="form-control" placeholder="Type to search product">
+                    </div>
+                    <div class="form-group">
                         <select name="product_id" id="edit_product_id" class="form-control" required>
                             <option value="">Select Product</option>
                             <?php foreach ($products as $p): ?>
@@ -286,6 +304,40 @@ $products  = $db->getRows('SELECT item_id, item_name FROM item_master ORDER BY i
 <script src="assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
+    function attachSelectFilter(searchInputSelector, selectSelector) {
+        var $search = $(searchInputSelector);
+        var $select = $(selectSelector);
+
+        if (!$select.data('allOptions')) {
+            $select.data('allOptions', $select.find('option').clone());
+        }
+
+        function filterOptions() {
+            var term = ($search.val() || '').toLowerCase();
+            var selectedValue = $select.val();
+            var $allOptions = $select.data('allOptions');
+            var $filtered = $allOptions.filter(function () {
+                var text = ($(this).text() || '').toLowerCase();
+                var value = ($(this).val() || '').toLowerCase();
+                return term === '' || text.indexOf(term) !== -1 || value.indexOf(term) !== -1;
+            }).clone();
+
+            $select.empty().append($filtered);
+            if (selectedValue && $select.find('option[value="' + selectedValue + '"]').length) {
+                $select.val(selectedValue);
+            } else {
+                $select.val('');
+            }
+        }
+
+        $search.off('input.cpdFilter').on('input.cpdFilter', filterOptions);
+    }
+
+    attachSelectFilter('#add_customer_search', '#add_customer_id');
+    attachSelectFilter('#add_product_search', '#add_product_id');
+    attachSelectFilter('#edit_customer_search', '#edit_customer_id');
+    attachSelectFilter('#edit_product_search', '#edit_product_id');
+
     $('#cpd_table').DataTable({
         responsive: true,
         order: [[1, 'asc']],

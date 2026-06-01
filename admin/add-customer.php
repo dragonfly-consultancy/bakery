@@ -97,6 +97,8 @@ $formData = [
     'emergency_contact_telephone' => '',
     'custom_url_link' => '',
     'google_map_link' => '',
+    'line_discount_active' => 0,
+    'line_discount_id' => '',
     'contact_name' => '',
     'contact_email' => '',
     'contact_telephone' => '',
@@ -118,6 +120,18 @@ try {
     $paymentTerms = $db->getRows('SELECT * FROM payment_terms ORDER BY payment_terms_name ASC');
     $priceTypes = $db->getRows('SELECT * FROM price_type ORDER BY description ASC');
     $discountCodes = $db->getRows('SELECT id, code, description, percentage FROM discount_code ORDER BY code ASC');
+    $lineDiscountIdCol = $db->getRow("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'customer' AND COLUMN_NAME = 'line_discount_id'");
+    if (!$lineDiscountIdCol) {
+        $db->insertRow("ALTER TABLE customer ADD COLUMN line_discount_id INT(10) NULL DEFAULT NULL");
+    }
+    $lineDiscountPctCol = $db->getRow("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'customer' AND COLUMN_NAME = 'line_discount_percentage'");
+    if (!$lineDiscountPctCol) {
+        $db->insertRow("ALTER TABLE customer ADD COLUMN line_discount_percentage DECIMAL(10,2) NULL DEFAULT NULL");
+    }
+    $lineDiscountActiveCol = $db->getRow("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'customer' AND COLUMN_NAME = 'line_discount_active'");
+    if (!$lineDiscountActiveCol) {
+        $db->insertRow("ALTER TABLE customer ADD COLUMN line_discount_active TINYINT(1) NOT NULL DEFAULT 0");
+    }
     $db->getRows('CREATE TABLE IF NOT EXISTS `customer_compliance_documents` (
         `id` int(10) NOT NULL AUTO_INCREMENT,
         `customer_id` int(10) NOT NULL,
@@ -204,7 +218,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData['emergency_contact_telephone'] = trim($_POST['emergency_contact_telephone'] ?? '');
     $formData['custom_url_link'] = trim($_POST['custom_url_link'] ?? '');
     $formData['google_map_link'] = trim($_POST['google_map_link'] ?? '');
+    $formData['line_discount_active'] = isset($_POST['line_discount_active']) ? 1 : 0;
     $formData['line_discount_id'] = trim($_POST['line_discount_id'] ?? '');
+    if (!$formData['line_discount_active']) {
+        $formData['line_discount_id'] = '';
+    }
     $formData['contact_name'] = trim($_POST['contact_name'] ?? '');
     $formData['contact_email'] = trim($_POST['contact_email'] ?? '');
     $formData['contact_telephone'] = trim($_POST['contact_telephone'] ?? '');
@@ -391,9 +409,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors) && $db) {
         try {
+            $lineDiscountPercentageValue = null;
+            if ($formData['line_discount_active'] && $formData['line_discount_id'] !== '') {
+                $selectedLineDiscount = $db->getRow('SELECT percentage FROM discount_code WHERE id = ? LIMIT 1', [(int)$formData['line_discount_id']]);
+                if ($selectedLineDiscount && isset($selectedLineDiscount['percentage']) && is_numeric($selectedLineDiscount['percentage'])) {
+                    $lineDiscountPercentageValue = number_format((float)$selectedLineDiscount['percentage'], 2, '.', '');
+                }
+            }
+
             $inserted = $db->insertRow(
-                'INSERT INTO customer (customer_code, customer_email, customer_password, is_active, locked, customer_title, customer_name, customer_nic, customer_avtive_code, customer_address, address_line_1, address_line_2, city, postal_code, customer_discount, customer_tell, customer_mobile, customer_note, customer_outstanding_balance, credit_limit, account_hold, abn_no, acn_no, vat_registered, gst_no, payment_terms_id, customer_logo, customer_price_type_id, new_customer, RepeatInterval, RepeatUnit, legal_name, trading_name, customer_remarks, min_order_amount, emergency_contact_name, emergency_contact_email, emergency_contact_telephone, custom_url_link, google_map_link, contact_name, contact_email, contact_telephone, line_discount_id)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0.00, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                'INSERT INTO customer (customer_code, customer_email, customer_password, is_active, locked, customer_title, customer_name, customer_nic, customer_avtive_code, customer_address, address_line_1, address_line_2, city, postal_code, customer_discount, customer_tell, customer_mobile, customer_note, customer_outstanding_balance, credit_limit, account_hold, abn_no, acn_no, vat_registered, gst_no, payment_terms_id, customer_logo, customer_price_type_id, new_customer, RepeatInterval, RepeatUnit, legal_name, trading_name, customer_remarks, min_order_amount, emergency_contact_name, emergency_contact_email, emergency_contact_telephone, custom_url_link, google_map_link, contact_name, contact_email, contact_telephone, line_discount_active, line_discount_id, line_discount_percentage)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0.00, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 [
                     $formData['customer_code'] !== '' ? $formData['customer_code'] : null,
                     $formData['customer_email'] !== '' ? $formData['customer_email'] : null,
@@ -437,7 +463,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $formData['contact_name'] !== '' ? $formData['contact_name'] : null,
                     $formData['contact_email'] !== '' ? $formData['contact_email'] : null,
                     $formData['contact_telephone'] !== '' ? $formData['contact_telephone'] : null,
+                    (int)$formData['line_discount_active'],
                     $formData['line_discount_id'] !== '' ? (int)$formData['line_discount_id'] : null,
+                    $lineDiscountPercentageValue,
                 ]
             );
 
@@ -846,11 +874,16 @@ if ($message !== '' && !$MessageClass) {
                                                                             <input type="number" class="form-control" name="customer_discount" placeholder="Discount" min="0" max="100" step="0.01">
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
+                                                                            <div class="checkbox-list" style="margin-bottom: 8px;">
+                                                                                <label class="checkbox-inline" style="font-weight: 600; color: #555; padding-left: 0;">
+                                                                                    <input type="checkbox" id="line_discount_active" name="line_discount_active" value="1" <?php echo !empty($formData['line_discount_active']) ? 'checked' : ''; ?>> Line Discount Active
+                                                                                </label>
+                                                                            </div>
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Line Discount (%)</label>
-                                                                            <select class="form-control select2" name="line_discount_id">
+                                                                            <select class="form-control select2" id="line_discount_id" name="line_discount_id" <?php echo empty($formData['line_discount_active']) ? 'disabled' : ''; ?>>
                                                                                 <option value="">-- No Line Discount --</option>
                                                                                 <?php foreach ($discountCodes as $dc): ?>
-                                                                                    <option value="<?php echo (int)$dc['id']; ?>">
+                                                                                    <option value="<?php echo (int)$dc['id']; ?>" <?php echo (string)$formData['line_discount_id'] === (string)$dc['id'] ? 'selected' : ''; ?>>
                                                                                         <?php echo h($dc['code']); ?> &ndash; <?php echo h($dc['description']); ?> (<?php echo number_format((float)$dc['percentage'], 2); ?>%)
                                                                                     </option>
                                                                                 <?php endforeach; ?>
@@ -1258,6 +1291,17 @@ if ($message !== '' && !$MessageClass) {
         <script>
             $(document).ready(function() {
                 try { $('.select2').select2(); } catch (e) { console.warn('select2 init failed', e); }
+
+                function toggleLineDiscount() {
+                    var isActive = $('#line_discount_active').is(':checked');
+                    $('#line_discount_id').prop('disabled', !isActive).trigger('change.select2');
+                }
+
+                $('#line_discount_active').on('change', function() {
+                    toggleLineDiscount();
+                });
+
+                toggleLineDiscount();
 
                 $('#addCardPayment').on('click', function() {
                     var template = $('#cardPaymentTemplate').html();
