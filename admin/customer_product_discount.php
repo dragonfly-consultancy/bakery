@@ -49,16 +49,16 @@ $discounts = $db->getRows('SELECT cpd.*, c.customer_name, p.item_name FROM custo
 // ── Fetch single record for edit modal ────────────────────────────────────────
 $editRecord = null;
 if (isset($_GET['editID']) && intval($_GET['editID']) > 0) {
-    $editRecord = $db->getRow('SELECT * FROM customer_product_discount WHERE id = ?', [intval($_GET['editID'])]);
+    $editRecord = $db->getRow('SELECT cpd.*, c.customer_name, p.item_name FROM customer_product_discount cpd JOIN customer c ON cpd.customer_id = c.customer_id JOIN item_master p ON cpd.product_id = p.item_id WHERE cpd.id = ?', [intval($_GET['editID'])]);
 }
 // ── Fetch customers and products for dropdowns ────────────────────────────────
 $customers = $db->getRows('SELECT customer_id, customer_name FROM customer WHERE customer_name IS NOT NULL AND customer_name <> "" ORDER BY customer_name ASC');
 if (empty($customers)) {
     $customers = $db->getRows('SELECT customer_id, customer_name FROM customer ORDER BY customer_name ASC');
 }
-$products = $db->getRows('SELECT item_id, item_name FROM item_master WHERE item_name IS NOT NULL AND item_name <> "" ORDER BY item_name ASC');
+$products = $db->getRows('SELECT item_id, item_name FROM item_master WHERE allow_in_sales = 1 AND item_name IS NOT NULL AND item_name <> "" ORDER BY item_name ASC');
 if (empty($products)) {
-    $products = $db->getRows('SELECT item_id, item_name FROM item_master ORDER BY item_name ASC');
+    $products = $db->getRows('SELECT item_id, item_name FROM item_master WHERE allow_in_sales = 1 ORDER BY item_name ASC');
 }
 ?>
 <!DOCTYPE html>
@@ -164,27 +164,25 @@ if (empty($products)) {
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Customer <span class="required">*</span></label>
-                        <input type="text" id="add_customer_search" class="form-control" placeholder="Type to search customer">
-                    </div>
-                    <div class="form-group">
-                        <select name="customer_id" id="add_customer_id" class="form-control" required>
-                            <option value="">Select Customer</option>
+                        <input type="text" id="add_customer_name" class="form-control" placeholder="Type customer name" list="add_customers_list" autocomplete="off" required>
+                        <datalist id="add_customers_list">
                             <?php foreach ($customers as $c): ?>
-                                <option value="<?php echo $c['customer_id']; ?>"><?php echo htmlspecialchars($c['customer_name']); ?></option>
+                                <option value="<?php echo htmlspecialchars($c['customer_name']); ?>"></option>
                             <?php endforeach; ?>
-                        </select>
+                        </datalist>
+                        <input type="hidden" name="customer_id" id="add_customer_id">
+                        <span id="add_customer_error" class="help-block text-danger" style="display:none;">Customer not found in the list. Please select a valid customer.</span>
                     </div>
                     <div class="form-group">
                         <label>Product <span class="required">*</span></label>
-                        <input type="text" id="add_product_search" class="form-control" placeholder="Type to search product">
-                    </div>
-                    <div class="form-group">
-                        <select name="product_id" id="add_product_id" class="form-control" required>
-                            <option value="">Select Product</option>
+                        <input type="text" id="add_product_name" class="form-control" placeholder="Type product name" list="add_products_list" autocomplete="off" required>
+                        <datalist id="add_products_list">
                             <?php foreach ($products as $p): ?>
-                                <option value="<?php echo $p['item_id']; ?>"><?php echo htmlspecialchars($p['item_name']); ?></option>
+                                <option value="<?php echo htmlspecialchars($p['item_name']); ?>"></option>
                             <?php endforeach; ?>
-                        </select>
+                        </datalist>
+                        <input type="hidden" name="product_id" id="add_product_id">
+                        <span id="add_product_error" class="help-block text-danger" style="display:none;">Product not found in the list. Please select a valid product.</span>
                     </div>
                     <div class="form-group">
                         <label>Discount Percentage <span class="required">*</span></label>
@@ -220,27 +218,25 @@ if (empty($products)) {
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Customer <span class="required">*</span></label>
-                        <input type="text" id="edit_customer_search" class="form-control" placeholder="Type to search customer">
-                    </div>
-                    <div class="form-group">
-                        <select name="customer_id" id="edit_customer_id" class="form-control" required>
-                            <option value="">Select Customer</option>
+                        <input type="text" id="edit_customer_name" class="form-control" placeholder="Type customer name" list="edit_customers_list" autocomplete="off" required>
+                        <datalist id="edit_customers_list">
                             <?php foreach ($customers as $c): ?>
-                                <option value="<?php echo $c['customer_id']; ?>"><?php echo htmlspecialchars($c['customer_name']); ?></option>
+                                <option value="<?php echo htmlspecialchars($c['customer_name']); ?>"></option>
                             <?php endforeach; ?>
-                        </select>
+                        </datalist>
+                        <input type="hidden" name="customer_id" id="edit_customer_id">
+                        <span id="edit_customer_error" class="help-block text-danger" style="display:none;">Customer not found in the list. Please select a valid customer.</span>
                     </div>
                     <div class="form-group">
                         <label>Product <span class="required">*</span></label>
-                        <input type="text" id="edit_product_search" class="form-control" placeholder="Type to search product">
-                    </div>
-                    <div class="form-group">
-                        <select name="product_id" id="edit_product_id" class="form-control" required>
-                            <option value="">Select Product</option>
+                        <input type="text" id="edit_product_name" class="form-control" placeholder="Type product name" list="edit_products_list" autocomplete="off" required>
+                        <datalist id="edit_products_list">
                             <?php foreach ($products as $p): ?>
-                                <option value="<?php echo $p['item_id']; ?>"><?php echo htmlspecialchars($p['item_name']); ?></option>
+                                <option value="<?php echo htmlspecialchars($p['item_name']); ?>"></option>
                             <?php endforeach; ?>
-                        </select>
+                        </datalist>
+                        <input type="hidden" name="product_id" id="edit_product_id">
+                        <span id="edit_product_error" class="help-block text-danger" style="display:none;">Product not found in the list. Please select a valid product.</span>
                     </div>
                     <div class="form-group">
                         <label>Discount Percentage <span class="required">*</span></label>
@@ -304,39 +300,75 @@ if (empty($products)) {
 <script src="assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
-    function attachSelectFilter(searchInputSelector, selectSelector) {
-        var $search = $(searchInputSelector);
-        var $select = $(selectSelector);
+    var customers = <?php echo json_encode($customers); ?>;
+    var products = <?php echo json_encode($products); ?>;
 
-        if (!$select.data('allOptions')) {
-            $select.data('allOptions', $select.find('option').clone());
+    function normalize(value) {
+        return $.trim(value || '').toLowerCase();
+    }
+
+    function findIdByName(list, nameKey, idKey, value) {
+        var term = normalize(value);
+        if (!term) {
+            return '';
         }
+        for (var i = 0; i < list.length; i++) {
+            if (normalize(list[i][nameKey]) === term) {
+                return list[i][idKey];
+            }
+        }
+        return '';
+    }
 
-        function filterOptions() {
-            var term = ($search.val() || '').toLowerCase();
-            var selectedValue = $select.val();
-            var $allOptions = $select.data('allOptions');
-            var $filtered = $allOptions.filter(function () {
-                var text = ($(this).text() || '').toLowerCase();
-                var value = ($(this).val() || '').toLowerCase();
-                return term === '' || text.indexOf(term) !== -1 || value.indexOf(term) !== -1;
-            }).clone();
+    function bindLookup(nameSelector, idSelector, errorSelector, list, nameKey, idKey) {
+        var $name = $(nameSelector);
+        var $id = $(idSelector);
+        var $error = $(errorSelector);
 
-            $select.empty().append($filtered);
-            if (selectedValue && $select.find('option[value="' + selectedValue + '"]').length) {
-                $select.val(selectedValue);
+        function syncId() {
+            var val = $name.val();
+            var id = findIdByName(list, nameKey, idKey, val);
+            $id.val(id);
+            if (val && !id) {
+                $error.show();
+                $name.closest('.form-group').addClass('has-error');
             } else {
-                $select.val('');
+                $error.hide();
+                $name.closest('.form-group').removeClass('has-error');
             }
         }
 
-        $search.off('input.cpdFilter').on('input.cpdFilter', filterOptions);
+        $name.on('input change blur', syncId);
+        syncId();
     }
 
-    attachSelectFilter('#add_customer_search', '#add_customer_id');
-    attachSelectFilter('#add_product_search', '#add_product_id');
-    attachSelectFilter('#edit_customer_search', '#edit_customer_id');
-    attachSelectFilter('#edit_product_search', '#edit_product_id');
+    bindLookup('#add_customer_name', '#add_customer_id', '#add_customer_error', customers, 'customer_name', 'customer_id');
+    bindLookup('#add_product_name', '#add_product_id', '#add_product_error', products, 'item_name', 'item_id');
+    bindLookup('#edit_customer_name', '#edit_customer_id', '#edit_customer_error', customers, 'customer_name', 'customer_id');
+    bindLookup('#edit_product_name', '#edit_product_id', '#edit_product_error', products, 'item_name', 'item_id');
+
+    $('#addCPDForm, #editCPDForm').on('submit', function (e) {
+        var $form = $(this);
+        var customerId = $form.find('input[name="customer_id"]').val();
+        var productId = $form.find('input[name="product_id"]').val();
+        var customerName = $form.find('[id$="_customer_name"]').val();
+        var productName = $form.find('[id$="_product_name"]').val();
+        var valid = true;
+
+        if (customerName && !customerId) {
+            $form.find('[id$="_customer_error"]').show();
+            $form.find('[id$="_customer_name"]').closest('.form-group').addClass('has-error');
+            valid = false;
+        }
+        if (productName && !productId) {
+            $form.find('[id$="_product_error"]').show();
+            $form.find('[id$="_product_name"]').closest('.form-group').addClass('has-error');
+            valid = false;
+        }
+        if (!valid || !customerId || !productId) {
+            e.preventDefault();
+        }
+    });
 
     $('#cpd_table').DataTable({
         responsive: true,
@@ -347,6 +379,8 @@ $(document).ready(function () {
     $('#edit_id').val('<?php echo (int)$editRecord['id']; ?>');
     $('#edit_customer_id').val('<?php echo (int)$editRecord['customer_id']; ?>');
     $('#edit_product_id').val('<?php echo (int)$editRecord['product_id']; ?>');
+    $('#edit_customer_name').val(<?php echo json_encode($editRecord['customer_name']); ?>);
+    $('#edit_product_name').val(<?php echo json_encode($editRecord['item_name']); ?>);
     $('#edit_discount_percentage').val('<?php echo (float)$editRecord['discount_percentage']; ?>');
     $('#edit_is_active').val('<?php echo (int)$editRecord['is_active']; ?>');
     $('#editCPDModal').modal('show');
