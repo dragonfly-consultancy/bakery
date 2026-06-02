@@ -103,9 +103,9 @@ if ($validDates) {
          JOIN invoice_hedder ih ON ih.invoice_h_id = id.invoice_h_id
          JOIN customer c ON c.customer_id = ih.invoice_h_customer_id
          JOIN item_master im ON im.item_id = id.invoice_d_item_id
-         WHERE ih.invoice_h_date BETWEEN ? AND ?
+                 WHERE ih.invoice_h_delivery_date BETWEEN ? AND ?
            AND ih.invoice_h_status = 1
-         ORDER BY ih.invoice_h_date ASC, ih.invoice_h_code ASC, id.invoice_d_id ASC",
+                 ORDER BY ih.invoice_h_delivery_date ASC, ih.invoice_h_code ASC, id.invoice_d_id ASC",
         [$date_from, $date_to]
     );
 }
@@ -250,10 +250,10 @@ $display_date_to   = $date_to   ? date('d/m/Y', strtotime($date_to))   : '';
 
                 <!-- Filter Bar -->
                 <form method="get" class="export-filter-bar">
-                    <label for="date_from">From:</label>
+                    <label for="date_from">Delivery From:</label>
                     <input type="date" id="date_from" name="date_from" value="<?php echo xeroExportHtml($date_from); ?>" required />
 
-                    <label for="date_to">To:</label>
+                    <label for="date_to">Delivery To:</label>
                     <input type="date" id="date_to" name="date_to" value="<?php echo xeroExportHtml($date_to); ?>" required />
 
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Preview</button>
