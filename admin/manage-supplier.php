@@ -57,6 +57,68 @@ function getContent() {
         <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
+        <style>
+            .page-content button:not(.close):not(.action-btn),
+            .page-content .btn:not(.action-btn),
+            .page-content button[type="button"]:not(.close):not(.action-btn),
+            .page-content button[type="submit"]:not(.close):not(.action-btn),
+            .page-content input[type="button"],
+            .page-content input[type="submit"],
+            .page-content input[type="reset"],
+            .page-content a.btn:not(.action-btn) {
+                background: var(--accent-soft) !important;
+                color: var(--ink) !important;
+                font-weight: 500 !important;
+                border-color: var(--accent-soft) !important;
+            }
+
+            .page-content button:not(.close):not(.action-btn):hover,
+            .page-content .btn:not(.action-btn):hover,
+            .page-content button:not(.close):not(.action-btn):focus,
+            .page-content .btn:not(.action-btn):focus,
+            .page-content input[type="button"]:hover,
+            .page-content input[type="submit"]:hover,
+            .page-content input[type="button"]:focus,
+            .page-content input[type="submit"]:focus,
+            .page-content a.btn:not(.action-btn):hover,
+            .page-content a.btn:not(.action-btn):focus {
+                background: var(--accent-soft) !important;
+                color: var(--ink) !important;
+                border-color: var(--accent-soft) !important;
+                opacity: 0.9;
+            }
+
+            .page-content .supplier-action-buttons .btn.action-btn.btn-info,
+            .page-content .supplier-action-buttons .btn.action-btn.btn-info:hover,
+            .page-content .supplier-action-buttons .btn.action-btn.btn-info:focus {
+                background-color: #3598dc !important;
+                border-color: #3598dc !important;
+                color: #fff !important;
+                opacity: 1 !important;
+            }
+
+            .page-content .supplier-action-buttons .btn.action-btn.btn-default,
+            .page-content .supplier-action-buttons .btn.action-btn.btn-default:hover,
+            .page-content .supplier-action-buttons .btn.action-btn.btn-default:focus {
+                background-color: #e1e5ec !important;
+                border-color: #ccd1d9 !important;
+                color: #333 !important;
+                opacity: 1 !important;
+            }
+
+            .page-content .supplier-action-buttons .btn.action-btn.btn-danger,
+            .page-content .supplier-action-buttons .btn.action-btn.btn-danger:hover,
+            .page-content .supplier-action-buttons .btn.action-btn.btn-danger:focus {
+                background-color: #e7505a !important;
+                border-color: #e7505a !important;
+                color: #fff !important;
+                opacity: 1 !important;
+            }
+
+            .page-content .btn-group.supplier-action-buttons {
+                background-color: #fff !important;
+            }
+        </style>
        </head>
     <!-- END HEAD -->
 
@@ -147,10 +209,10 @@ function getContent() {
                                                 <td><?php include('currency.php'); ?> <?php  echo  $query['supplier_outstanding_balance']; ?> </td>
                                                 <td><?php  echo  $query['supplier_note']; ?> </td>
                                                 <td> 
-                                                    <div class="btn-group">
-                                            <a href="supplier_view.php?supplierID=<?php echo $supid; ?>" class="btn btn-xs btn-info" title="View Supplier"><i class="fa fa-eye"></i></a>
-                                            <a href="edit-supplier.php?supplierID=<?php echo $supid; ?>" class="btn btn-xs btn-default" title="Edit Supplier"><i class="fa fa-pencil"></i></a>
-                                            <a href="manage-supplier.php?deleteID=<?php echo $supid; ?>" class="btn btn-xs btn-danger" title="Delete Supplier"><i class="glyphicon glyphicon-trash"></i></a>
+                                                        <div class="btn-group supplier-action-buttons">
+                                                    <a href="supplier_view.php?supplierID=<?php echo $supid; ?>" class="btn btn-xs btn-info action-btn" title="View Supplier"><i class="fa fa-eye"></i></a>
+                                                    <a href="edit-supplier.php?supplierID=<?php echo $supid; ?>" class="btn btn-xs btn-default action-btn" title="Edit Supplier"><i class="fa fa-pencil"></i></a>
+                                                    <a href="manage-supplier.php?deleteID=<?php echo $supid; ?>" class="btn btn-xs btn-danger action-btn" title="Delete Supplier"><i class="glyphicon glyphicon-trash"></i></a>
                                         </div>
                                                 </td>
                                             </tr>

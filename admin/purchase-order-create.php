@@ -118,6 +118,57 @@ $active_currency_code = get_active_currency_code();
         .table-hover > tbody > tr:hover {
             background-color: #f5f5f5;
         }
+
+        .page-content button:not(.close),
+        .page-content .btn,
+        .page-content button[type="button"]:not(.close),
+        .page-content button[type="submit"]:not(.close),
+        .page-content input[type="button"],
+        .page-content input[type="submit"],
+        .page-content input[type="reset"],
+        .page-content a.btn {
+            background: var(--accent-soft) !important;
+            color: var(--ink) !important;
+            font-weight: 500 !important;
+            border-color: var(--accent-soft) !important;
+            border-radius: 8px !important;
+        }
+
+        .page-content button:not(.close):hover,
+        .page-content .btn:hover,
+        .page-content button:not(.close):focus,
+        .page-content .btn:focus,
+        .page-content input[type="button"]:hover,
+        .page-content input[type="submit"]:hover,
+        .page-content input[type="button"]:focus,
+        .page-content input[type="submit"]:focus,
+        .page-content a.btn:hover,
+        .page-content a.btn:focus {
+            background: var(--accent-soft) !important;
+            color: var(--ink) !important;
+            border-color: var(--accent-soft) !important;
+            opacity: 0.9;
+        }
+
+        .page-content button.close,
+        .page-content button.close:hover,
+        .page-content button.close:focus {
+            background: transparent !important;
+            border-color: transparent !important;
+            color: inherit !important;
+            font-weight: normal !important;
+        }
+
+        .page-content button:disabled,
+        .page-content .btn:disabled,
+        .page-content input[type="submit"]:disabled,
+        .page-content input[type="button"]:disabled {
+            background: var(--accent-soft) !important;
+            color: var(--ink) !important;
+            border-color: var(--accent-soft) !important;
+            border-radius: 8px !important;
+            opacity: 0.65;
+        }
     </style>
 </head>
 <body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
