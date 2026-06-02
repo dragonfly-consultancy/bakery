@@ -132,6 +132,44 @@ $grn_for_transfer = $db->getRow(
         }
         .btn-back:hover { background: #545b62; color: #fff; }
 
+        button:not(.close),
+        .btn,
+        .btn-print,
+        .btn-back,
+        button[type="button"]:not(.close),
+        button[type="submit"]:not(.close),
+        input[type="button"],
+        input[type="submit"],
+        a.btn,
+        [class*="btn-"] {
+            background: var(--accent-soft, #f6ece0) !important;
+            color: var(--ink, #2b2218) !important;
+            font-weight: 500 !important;
+            border-color: var(--accent-soft, #f6ece0) !important;
+        }
+
+        button:not(.close):hover,
+        .btn:hover,
+        .btn-print:hover,
+        .btn-back:hover,
+        button:not(.close):focus,
+        .btn:focus,
+        .btn-print:focus,
+        .btn-back:focus,
+        input[type="button"]:hover,
+        input[type="submit"]:hover,
+        input[type="button"]:focus,
+        input[type="submit"]:focus,
+        a.btn:hover,
+        a.btn:focus,
+        [class*="btn-"]:hover,
+        [class*="btn-"]:focus {
+            background: var(--accent-soft, #f6ece0) !important;
+            color: var(--ink, #2b2218) !important;
+            border-color: var(--accent-soft, #f6ece0) !important;
+            opacity: 0.9;
+        }
+
         /* ── Header ─────────────────────────────────────────── */
         .doc-header {
             display: flex;

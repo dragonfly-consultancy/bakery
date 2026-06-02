@@ -1,4 +1,40 @@
 ﻿<html>
+<head>
+<style>
+button:not(.close),
+.btn,
+button[type="button"]:not(.close),
+button[type="submit"]:not(.close),
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+a.btn,
+[class*="btn-"] {
+    background: var(--accent-soft, #f6ece0) !important;
+    color: var(--ink, #2b2218) !important;
+    font-weight: 500 !important;
+    border-color: var(--accent-soft, #f6ece0) !important;
+}
+
+button:not(.close):hover,
+.btn:hover,
+button:not(.close):focus,
+.btn:focus,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="button"]:focus,
+input[type="submit"]:focus,
+a.btn:hover,
+a.btn:focus,
+[class*="btn-"]:hover,
+[class*="btn-"]:focus {
+    background: var(--accent-soft, #f6ece0) !important;
+    color: var(--ink, #2b2218) !important;
+    border-color: var(--accent-soft, #f6ece0) !important;
+    opacity: 0.9;
+}
+</style>
+</head>
 <body style="background:#faf6f0;">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>

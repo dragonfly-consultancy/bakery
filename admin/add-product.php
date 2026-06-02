@@ -217,6 +217,49 @@ function load_warranty()
                 font-size: 18px;
                 opacity: 0.85;
             }
+
+            .page-content button:not(.close),
+            .page-content .btn,
+            .page-content button[type="button"]:not(.close),
+            .page-content button[type="submit"]:not(.close),
+            .page-content input[type="button"],
+            .page-content input[type="submit"],
+            .page-content input[type="reset"],
+            .page-content a.btn,
+            .page-content [class*="btn-"] {
+                background: var(--accent-soft) !important;
+                color: var(--ink) !important;
+                font-weight: 500 !important;
+                border-color: var(--accent-soft) !important;
+            }
+
+            .page-content button:not(.close):hover,
+            .page-content .btn:hover,
+            .page-content button:not(.close):focus,
+            .page-content .btn:focus,
+            .page-content input[type="button"]:hover,
+            .page-content input[type="submit"]:hover,
+            .page-content input[type="button"]:focus,
+            .page-content input[type="submit"]:focus,
+            .page-content a.btn:hover,
+            .page-content a.btn:focus,
+            .page-content [class*="btn-"]:hover,
+            .page-content [class*="btn-"]:focus {
+                background: var(--accent-soft) !important;
+                color: var(--ink) !important;
+                border-color: var(--accent-soft) !important;
+                opacity: 0.9;
+            }
+
+            .page-content button.close,
+            .page-content button.close:hover,
+            .page-content button.close:focus {
+                background: transparent !important;
+                border-color: transparent !important;
+                color: inherit !important;
+                font-weight: normal !important;
+            }
+
             @media (max-width: 1366px) { .product-form-grid { grid-template-columns: 1fr; } }
             @media (max-width: 991px) { .product-form-row { margin: 0; } }
             @media (max-width: 767px) { .product-form-card { padding: 18px; } }

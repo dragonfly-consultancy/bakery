@@ -158,6 +158,48 @@ function load_location()
     padding: 10px;
     background: white;
 }
+
+button:not(.close),
+.btn,
+button[type="button"]:not(.close),
+button[type="submit"]:not(.close),
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+a.btn,
+[class*="btn-"] {
+    background: var(--accent-soft, #f6ece0) !important;
+    color: var(--ink, #2b2218) !important;
+    font-weight: 500 !important;
+    border-color: var(--accent-soft, #f6ece0) !important;
+}
+
+button:not(.close):hover,
+.btn:hover,
+button:not(.close):focus,
+.btn:focus,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="button"]:focus,
+input[type="submit"]:focus,
+a.btn:hover,
+a.btn:focus,
+[class*="btn-"]:hover,
+[class*="btn-"]:focus {
+    background: var(--accent-soft, #f6ece0) !important;
+    color: var(--ink, #2b2218) !important;
+    border-color: var(--accent-soft, #f6ece0) !important;
+    opacity: 0.9;
+}
+
+button.close,
+button.close:hover,
+button.close:focus {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: inherit !important;
+    font-weight: normal !important;
+}
     </style>
     </head>
     <!-- END HEAD -->

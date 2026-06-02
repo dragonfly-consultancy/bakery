@@ -205,7 +205,30 @@ body,
 
 .btn {
     border-radius: 8px;
-    font-weight: 600;
+    font-weight: 500;
+    background: var(--accent-soft);
+    color: var(--ink);
+    border-color: var(--accent-soft);
+}
+
+.btn-primary,
+.btn.blue,
+.btn.btn-primary {
+    background: var(--accent-soft) !important;
+    color: var(--ink) !important;
+    border-color: var(--accent-soft) !important;
+    font-weight: 500 !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn.blue:hover,
+.btn.blue:focus,
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+    background-color: var(--accent-soft) !important;
+    border-color: var(--accent-soft) !important;
+    opacity: 0.9;
 }
 
 .btn-success,
@@ -250,4 +273,149 @@ body,
 .btn.btn-warning:focus {
     background-color: var(--accent-d) !important;
     border-color: var(--accent-d) !important;
+}
+
+/* Universal button styling override for all admin buttons */
+button:not(.close),
+.btn,
+button[type="button"]:not(.close),
+button[type="submit"]:not(.close),
+button[type="reset"]:not(.close),
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.btn-default,
+.btn-primary,
+.btn-info,
+.btn-warning,
+.btn-danger,
+.btn-success,
+.btn.blue,
+.btn.green,
+.btn.red,
+.btn.orange,
+.btn-export,
+.btn-submit,
+.btn-circle,
+.btn-group button,
+a.btn,
+[class*="btn-"] {
+    background: var(--accent-soft) !important;
+    color: var(--ink) !important;
+    font-weight: 500 !important;
+    border-color: var(--accent-soft) !important;
+    border-radius: 8px !important;
+}
+
+/* Hover states for all buttons */
+button:not(.close):hover,
+.btn:hover,
+button[type="button"]:not(.close):hover,
+button[type="submit"]:not(.close):hover,
+button[type="reset"]:not(.close):hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.btn-default:hover,
+.btn-primary:hover,
+.btn-info:hover,
+.btn-warning:hover,
+.btn-danger:hover,
+.btn-success:hover,
+.btn.blue:hover,
+.btn.green:hover,
+.btn.red:hover,
+.btn.orange:hover,
+a.btn:hover,
+[class*="btn-"]:hover {
+    background-color: var(--accent-soft) !important;
+    color: var(--ink) !important;
+    border-color: var(--accent-soft) !important;
+    opacity: 0.9;
+}
+
+/* Focus states for all buttons */
+button:not(.close):focus,
+.btn:focus,
+button[type="button"]:not(.close):focus,
+button[type="submit"]:not(.close):focus,
+button[type="reset"]:not(.close):focus,
+input[type="button"]:focus,
+input[type="submit"]:focus,
+input[type="reset"]:focus,
+.btn-default:focus,
+.btn-primary:focus,
+.btn-info:focus,
+.btn-warning:focus,
+.btn-danger:focus,
+.btn-success:focus,
+.btn.blue:focus,
+.btn.green:focus,
+.btn.red:focus,
+.btn.orange:focus,
+a.btn:focus,
+[class*="btn-"]:focus {
+    background-color: var(--accent-soft) !important;
+    color: var(--ink) !important;
+    border-color: var(--accent-soft) !important;
+    outline: none;
+}
+
+button.close,
+button.close:hover,
+button.close:focus {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: inherit !important;
+    font-weight: normal !important;
+    opacity: 1;
+}
+
+/* ── Action buttons in table rows (xs size) ── */
+.btn.btn-xs:not(.close),
+.btn-group-xs > .btn:not(.close) {
+    background-color: #c2622d !important;
+    border-color: #c2622d !important;
+    color: #fff !important;
+    font-weight: 500 !important;
+    border-radius: 8px !important;
+}
+.btn.btn-xs.btn-danger:not(.close),
+.btn-group-xs > .btn.btn-danger:not(.close) {
+    background-color: #a13d2d !important;
+    border-color: #a13d2d !important;
+    color: #fff !important;
+}
+.btn.btn-xs:not(.close):hover,
+.btn-group-xs > .btn:not(.close):hover {
+    opacity: 0.88;
+}
+
+/* ── btn-group-solid outline style (e.g. purchase-history) ── */
+.btn-group-solid .btn.dark.btn-outline,
+.btn-group-solid .btn.dark.btn-outline:hover,
+.btn-group-solid .btn.dark.btn-outline:focus {
+    background-color: #c2622d !important;
+    border-color: #c2622d !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+}
+.btn-group-solid .btn.blue.btn-outline,
+.btn-group-solid .btn.blue.btn-outline:hover,
+.btn-group-solid .btn.blue.btn-outline:focus {
+    background-color: #a13d2d !important;
+    border-color: #a13d2d !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+}
+.btn-group-solid {
+    background-color: transparent !important;
+}
+
+/* ── Alert overrides ── */
+.alert.alert-success,
+.alert-success.alert-dismissable {
+    background-color: #f6ece0 !important;
+    border-color: #e8d5bc !important;
+    color: var(--ink) !important;
 }

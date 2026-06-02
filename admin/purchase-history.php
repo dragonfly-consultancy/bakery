@@ -38,6 +38,26 @@ include('include/check_login.php');
         <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
+        <style>
+            /* Action button overrides */
+            .btn.dark.btn-outline,
+            .btn.dark.btn-outline:hover,
+            .btn.dark.btn-outline:focus {
+                background-color: #c2622d !important;
+                border-color: #c2622d !important;
+                color: #fff !important;
+                border-radius: 8px !important;
+            }
+            .btn.blue.btn-outline,
+            .btn.blue.btn-outline:hover,
+            .btn.blue.btn-outline:focus {
+                background-color: #a13d2d !important;
+                border-color: #a13d2d !important;
+                color: #fff !important;
+                border-radius: 8px !important;
+            }
+            .btn-group-solid { background-color: transparent !important; }
+        </style>
        </head>
     <!-- END HEAD -->
 
