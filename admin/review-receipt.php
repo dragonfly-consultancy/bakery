@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting (E_ALL ^ E_NOTICE);
 
@@ -204,7 +204,7 @@ $db->Disconnect();
 
 
 </head>
-<body class="infobar-offcanvas layout-horizontal">
+<body class="infobar-offcanvas layout-horizontal" style="background:#faf6f0;">
   
 
 

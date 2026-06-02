@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -572,7 +572,7 @@ $grandTotalWeightKg = number_format($grandTotalWeight / 1000, 2);
         }
     </style>
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     <div class="clearfix"></div>
     <div class="page-container">
@@ -880,7 +880,7 @@ $grandTotalWeightKg = number_format($grandTotalWeight / 1000, 2);
             return;
         }
         
-        var html = '<html><head><meta charset="utf-8"></head><body>';
+        var html = '<html><head><meta charset="utf-8"></head><body style="background:#faf6f0;">';
         html += '<h2>Production Report - <?php echo $display_date_from . " to " . $display_date_to; ?></h2>';
         
         tables.forEach(function(table) {

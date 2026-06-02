@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
 <?php include('common/manubar.php'); ?>
 <div class="clearfix"></div>
 <div class="page-container">

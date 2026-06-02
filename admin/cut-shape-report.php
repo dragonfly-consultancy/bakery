@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -556,7 +556,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         @page { size: A4 landscape; margin: 10mm; }
     </style>
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     <div class="clearfix"></div>
     <div class="page-container">

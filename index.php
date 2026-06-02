@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -495,7 +495,7 @@ function SubCategoryList()
     </style>
 </head>
 
-<body>
+<body style="background:#faf6f0;">
     <div class="ps-page">
         <?php include('common/header_home.php'); ?>
         <div class="ps-home ps-home--1">

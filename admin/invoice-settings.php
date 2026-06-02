@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -180,7 +180,7 @@ $receipt_footer = $settings['receipt_footer'] ?? '';
         }
     </style>
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
 <?php include('common/manubar.php'); ?>
 <div class="page-container">
     <div class="page-content-wrapper">

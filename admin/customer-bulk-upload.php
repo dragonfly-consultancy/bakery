@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 if (session_status() === PHP_SESSION_NONE) {
@@ -421,7 +421,7 @@ function processCustomerImport(Database $db, $filePath, $deliveryRoutes)
         .stat-box p { margin: 5px 0 0; font-size: 13px; }
     </style>
 </head>
-<body class="page-header-fixed">
+<body class="page-header-fixed" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     <div class="page-container">
         <div class="page-sidebar-wrapper">

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -397,7 +397,7 @@ $allActiveStandingOrders = getAllActiveStandingOrders();
         .btn-so-edit:hover { background:#2980b9; }
     </style>
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white page-sidebar-closed">
+<body class="page-sidebar-closed-hide-logo page-content-white page-sidebar-closed" style="background:#faf6f0;">
 <?php include('common/manubar.php'); ?>
 <div class="clearfix"></div>
 <div class="page-container">

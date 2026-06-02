@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -94,7 +94,7 @@ foreach ($permissions as $perm) {
         .permission-group .panel-body { flex: 1; display: flex; flex-direction: column; }
     </style>
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
 <?php include('common/manubar.php'); ?>
 <div class="page-container">
     <div class="page-content-wrapper">

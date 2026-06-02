@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -76,7 +76,7 @@ $stats = $db->getRow(
         .type-service { background: #2980b9; color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 12px; }
     </style>
 </head>
-<body class="page-header-fixed">
+<body class="page-header-fixed" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     <div class="page-container">
         <div class="page-content-wrapper">

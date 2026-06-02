@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting (E_ALL ^ E_NOTICE);
 
@@ -233,7 +233,7 @@ $bulkPriceCsrf = $_SESSION['bulk_product_price_csrf'];
        </head>
     <!-- END HEAD -->
 
-    <body class="page-sidebar-closed-hide-logo page-content-white page-sidebar-closed">
+    <body class="page-sidebar-closed-hide-logo page-content-white page-sidebar-closed" style="background:#faf6f0;">
       <?php include('common/manubar.php'); ?>
         <!-- BEGIN HEADER & CONTENT DIVIDER -->
         <div class="clearfix"> </div>

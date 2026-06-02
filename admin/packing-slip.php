@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -633,7 +633,7 @@ if (isset($_GET['download']) && $_GET['download'] === '1') {
     }
 
     $pdfStyles = getPackingSlipStyles() . '\nbody { background: #fff; }\n.packing-slip { max-width: none; padding: 0; }';
-    $pdfHtml = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><style>' . $pdfStyles . '</style></head><body>';
+    $pdfHtml = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><style>' . $pdfStyles . '</style></head><body style="background:#faf6f0;">';
     foreach ($slips as $index => $slip) {
         $pdfHtml .= renderPackingSlipBody($slip, $config, true);
         if ($index < count($slips) - 1) {
@@ -684,7 +684,7 @@ if ($invoiceId > 0) {
         <?php echo getPackingSlipStyles(); ?>
     </style>
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     <div class="clearfix"></div>
     <div class="page-container">

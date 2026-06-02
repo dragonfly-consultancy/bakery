@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -102,7 +102,7 @@ try {
 <head>
     <?php include('common/head.php'); ?>
 </head>
-<body class="page-header-fixed">
+<body class="page-header-fixed" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     <div class="page-container">
         <div class="page-content-wrapper">
