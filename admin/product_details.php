@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting (E_ALL ^ E_NOTICE);
 
@@ -180,7 +180,7 @@ relatives." />
 
 </head>
 
-<body class="common-home res layout-home10 pattern-28 loaded">
+<body class="common-home res layout-home10 pattern-28 loaded" style="background:#faf6f0;">
     <div id="wrapper" class="wrapper-boxed banners-effect-7">
 		<!-- Header Container  -->
 			<?php include('common/header.php'); ?>

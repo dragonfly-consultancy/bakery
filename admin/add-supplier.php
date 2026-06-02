@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -170,7 +170,12 @@ try {
        }
        //-->
     </SCRIPT>
-    <body class="page-sidebar-closed-hide-logo page-content-white">
+    <body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
+    <style>
+        .page-content { background:#faf6f0 !important; }
+        .page-content-white .page-bar,
+        .page-container-bg-solid .page-bar { background-color:#faf6f0 !important; border-bottom: 1px solid #e0d8cc !important; }
+    </style>
       <?php include('common/manubar.php'); ?>
         <!-- BEGIN HEADER & CONTENT DIVIDER -->
         <div class="clearfix"> </div>

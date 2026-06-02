@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -938,7 +938,7 @@ $_SESSION['item_master_import_csrf'] = bin2hex(random_bytes(32));
         .stat-box p { margin: 5px 0 0; font-size: 13px; }
     </style>
 </head>
-<body class="page-header-fixed">
+<body class="page-header-fixed" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     <div class="page-container">
         <div class="page-sidebar-wrapper">

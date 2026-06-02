@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -2683,7 +2683,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
     </style>
 </head>
 
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     
     <div class="page-content-wrapper">
@@ -4528,7 +4528,7 @@ $canEditOrderDiscount = function_exists('isSuperAdmin') ? isSuperAdmin() : ((int
 
         function getOrCreateDropdown() {
             if (!$inlinePdOverlay || !$inlinePdOverlay.length || !$.contains(document, $inlinePdOverlay[0])) {
-                // Create once in <body> so it is never clipped by any ancestor
+                // Create once in <body style="background:#faf6f0;"> so it is never clipped by any ancestor
                 $('body > #inlineProductDropdownOverlay').remove();
                 $inlinePdOverlay = $(
                     '<div id="inlineProductDropdownOverlay" class="inline-product-dropdown">' +

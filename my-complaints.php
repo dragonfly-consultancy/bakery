@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -173,7 +173,7 @@ $complaints = $db->getRows(
         .outcome-box { background: #fafafa; border-left: 4px solid #111; padding: 15px; margin-top: 10px; border-radius: 0;}
     </style>
 </head>
-<body>
+<body style="background:#faf6f0;">
     <div class="ps-page">
         <?php include('common/header.php'); ?>
         <br>

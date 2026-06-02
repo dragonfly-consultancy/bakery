@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -69,7 +69,7 @@ $categories = getCategories();
         @media(max-width:992px){ .qa-inline{ flex-direction:column; align-items:stretch; } .qa-inline .select2{ width:100%!important; } }
     </style>
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white page-sidebar-closed">
+<body class="page-sidebar-closed-hide-logo page-content-white page-sidebar-closed" style="background:#faf6f0;">
 <?php include('common/manubar.php'); ?>
 <div class="clearfix"></div>
 <div class="page-container">

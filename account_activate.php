@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -35,7 +35,7 @@ if ($customerId > 0 && $verificationCode !== '') {
 <head>
     <?php include('common/styles.php'); ?>
 </head>
-<body>
+<body style="background:#faf6f0;">
     <div class="ps-page">
         <?php include('common/header.php'); ?>
         <div class="ps-account">

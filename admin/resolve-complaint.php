@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -157,7 +157,7 @@ if (isset($_GET['msg'])) {
         .material-fields { display: none; }
     </style>
 </head>
-<body class="page-header-fixed">
+<body class="page-header-fixed" style="background:#faf6f0;">
     <?php include('common/manubar.php'); ?>
     <div class="page-container">
         <div class="page-content-wrapper">

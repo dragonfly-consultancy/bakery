@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -721,7 +721,7 @@ if ($db) {
     <meta http-equiv="Expires" content="0" />
 </head>
 
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
     <?php if ($db) {
         include('common/manubar.php');
     } else { ?>

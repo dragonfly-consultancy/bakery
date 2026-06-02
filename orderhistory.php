@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -148,7 +148,7 @@ $db = new Database();
     </style>
 </head>
 
-<body>
+<body style="background:#faf6f0;">
     <div class="ps-page">
         <?php include('common/header.php'); ?>
         <br>

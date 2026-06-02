@@ -104,7 +104,7 @@ if (isSuperAdmin()) {
         
        </head>
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo" style="background:#f0f2f8;">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo" style="background:#faf6f0;">
       <?php include('common/manubar.php'); ?>
         <div class="clearfix"></div>
         <div class="page-container">

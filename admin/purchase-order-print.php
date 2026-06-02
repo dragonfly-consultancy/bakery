@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -345,7 +345,7 @@ $statusText = $statusMap[$note['status']] ?? $note['status'];
         }
     </style>
 </head>
-<body>
+<body style="background:#faf6f0;">
 
 <!-- Print / Back Buttons -->
 <div class="print-bar">

@@ -75,18 +75,40 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 ]) : true; 
 ?>
 
-<div class="hor-menu">
-    <ul class="nav navbar-nav">
+<style>
+    .page-header.navbar .hor-menu .navbar-nav>li.active>a,
+    .page-header.navbar .hor-menu .navbar-nav>li.current>a,
+    .page-header.navbar .hor-menu .navbar-nav>li.open>a,
+    .page-header.navbar .hor-menu .navbar-nav>li.active>a:hover,
+    .page-header.navbar .hor-menu .navbar-nav>li.current>a:hover,
+    .page-header.navbar .hor-menu .navbar-nav>li.open>a:hover,
+    .page-header.navbar .hor-menu.hor-menu-light .navbar-nav>li.active>a,
+    .page-header.navbar .hor-menu.hor-menu-light .navbar-nav>li.active>a:hover,
+    .page-header.navbar .hor-menu.hor-menu-light .navbar-nav>li.current>a,
+    .page-header.navbar .hor-menu.hor-menu-light .navbar-nav>li.current>a:hover,
+    .page-header.navbar .hor-menu.hor-menu-light .navbar-nav>li.open>a,
+    .page-header.navbar .hor-menu.hor-menu-light .navbar-nav>li.open>a:hover {
+        background: #3d2312 !important;
+    }
+
+    .page-header.navbar .hor-menu .navbar-nav>li .dropdown-menu,
+    .page-header.navbar .hor-menu.hor-menu-light .navbar-nav>li .dropdown-menu {
+        background: #3d2312 !important;
+    }
+</style>
+
+<div class="hor-menu" style="background-color: #2a1f18;">
+    <ul class="nav navbar-nav" style="background-color: #2a1f18;">
         <!-- Dashboard -->
         <?php if ($canDashboard) { ?>
-        <li class="classic-menu-dropdown">
+        <li class="classic-menu-dropdown" style="background-color: #2a1f18;">
             <a href="index.php"> Dashboard </a>
         </li>
         <?php } ?>
 
         <!-- Purchase -->
         <?php if ($canPurchase) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Purchase <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <?php if (function_exists('hasAnyPermission') && hasAnyPermission(['purchase.supplier.create', 'purchase.supplier.view', 'purchase.supplier.*'])) { ?>
@@ -118,7 +140,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 
         <!-- Stock -->
         <?php if ($canStockTransfer) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Stock <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <?php if (function_exists('hasPermission') ? hasPermission('stock.transfer.create') : true) { ?><li><a href="stock-transfer-create.php"><i class="fa fa-exchange"></i> Create Stock Transfer</a></li><?php } ?>
@@ -138,7 +160,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 
         <!-- Sales -->
         <?php if ($canOrders) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Sales <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <?php if (function_exists('hasPermission') ? hasPermission('orders.create') : true) { ?><li><a href="cart-order.php"><i class="fa fa-shopping-cart"></i> Cart Order</a></li><?php } ?>
@@ -155,7 +177,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 
         <!-- Product -->
         <?php if ($canProduct) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Product <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <?php if (function_exists('hasPermission') ? hasPermission('product.create') : true) { ?><li><a href="add-product.php"><i class="fa fa-plus-circle"></i> Add Product</a></li><?php } ?>
@@ -184,7 +206,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 
         <!-- Warehouse Management -->
         <?php if ($canWarehouse) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Warehouse <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <?php if (function_exists('hasPermission') ? hasPermission('warehouse.create') : true) { ?><li><a href="add-location.php"><i class="fa fa-plus"></i> Add Warehouse</a></li><?php } ?>
@@ -200,7 +222,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 
         <!-- Customer -->
         <?php if ($canCustomer) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Customer <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <?php if (function_exists('hasPermission') ? hasPermission('customer.create') : true) { ?><li><a href="add-customer.php"><i class="fa fa-user-plus"></i> Add Customer</a></li><?php } ?>
@@ -212,7 +234,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 
         <!-- CRM -->
         <?php if ($canCRM) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> CRM <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <?php if (function_exists('hasPermission') ? hasPermission('crm.view') : true) { ?><li><a href="crm-dashboard.php"><i class="fa fa-line-chart"></i> CRM Dashboard</a></li><?php } ?>
@@ -228,7 +250,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
         <?php } ?>
 
         <!-- Complaints -->
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Complaints <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <li><a href="manage-complaints.php"><i class="fa fa-list"></i> All Complaints</a></li>
@@ -241,7 +263,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 
         <!-- Reports -->
         <?php if ($canReports) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Reports <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <li class="dropdown-submenu">
@@ -293,7 +315,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
 
         <!-- Settings -->
         <?php if ($canSettings) { ?>
-        <li class="menu-dropdown classic-menu-dropdown ">
+        <li class="menu-dropdown classic-menu-dropdown " style="background-color: #2a1f18;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Settings <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
                 <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="manage-settings.php"><i class="fa fa-cogs"></i> Front Web Settings</a></li><?php } ?>

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -639,6 +639,9 @@ if ($message !== '' && !$MessageClass) {
         .section-card {
             margin-bottom: 30px;
         }
+        .page-content { background:#faf6f0 !important; }
+        .page-content-white .page-bar,
+        .page-container-bg-solid .page-bar { background-color:#faf6f0 !important; border-bottom: 1px solid #e0d8cc !important; }
         .form-actions { display: flex; justify-content: flex-end; gap: 12px; }
 
         .alert { margin-top: 20px; }
@@ -648,7 +651,7 @@ if ($message !== '' && !$MessageClass) {
         }
     </style>
 </head>
-<body class="page-sidebar-closed-hide-logo page-content-white">
+<body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
       <?php include('common/manubar.php'); ?>
         <!-- BEGIN HEADER & CONTENT DIVIDER -->
         <div class="clearfix"> </div>

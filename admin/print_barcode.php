@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 ob_start();
 error_reporting (E_ALL ^ E_NOTICE);
 session_start();
@@ -77,7 +77,7 @@ else
         </style>
        </head>
 
-<body>
+<body style="background:#faf6f0;">
 <div class="wrapper">
 
     <div class="table-responsive">

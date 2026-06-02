@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -20,7 +20,7 @@
        </head>
     <!-- END HEAD -->
 
-    <body class="page-sidebar-closed-hide-logo page-content-white">
+    <body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">
       <?php include('common/manubar.php'); ?>
         <!-- BEGIN HEADER & CONTENT DIVIDER -->
         <div class="clearfix"> </div>

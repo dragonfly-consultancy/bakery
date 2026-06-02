@@ -227,7 +227,7 @@ function TypeList()
     </style>
 </head>
 
-<body>
+<body style="background:#faf6f0;">
     <div class="ps-page">
         <?php include('common/header.php'); ?>
         <div class="ps-account">
