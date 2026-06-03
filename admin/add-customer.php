@@ -630,7 +630,7 @@ if ($message !== '' && !$MessageClass) {
     <link href="assets/global/plugins/summernote/summernote.css" rel="stylesheet" type="text/css" />
     <style>
         .section-card h4 {
-            background: linear-gradient(to right, #0056a0, #007cba);
+            background: #7f2f0a;
             color: white;
             padding: 10px;
             border-radius: 5px;
@@ -638,6 +638,11 @@ if ($message !== '' && !$MessageClass) {
         }
         .section-card {
             margin-bottom: 30px;
+        }
+        .portlet.blue-hoki,
+        .portlet.box.blue-hoki > .portlet-title,
+        .portlet > .portlet-body.blue-hoki {
+            background-color: #d65d1a;
         }
         .page-content { background:#faf6f0 !important; }
         .page-content-white .page-bar,
@@ -713,7 +718,7 @@ if ($message !== '' && !$MessageClass) {
                                                 <form id="addCustomerForm" action="" class="form-horizontal form-bordered form-row-stripped" method="POST" enctype="multipart/form-data">
                                                     <div class="form-body">
                                                         <div class="panel panel-primary" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #d65d1a 0%, #b84a12 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-user"></i> Basic Information
                                                                 </h4>
@@ -722,7 +727,7 @@ if ($message !== '' && !$MessageClass) {
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #667eea; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-id-card"></i> Customer Details</h6>
+                                                                            <h6 style="color: #d65d1a; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-id-card"></i> Customer Details</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Customer Code</label>
@@ -743,7 +748,7 @@ if ($message !== '' && !$MessageClass) {
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #667eea; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-phone"></i> Contact Information</h6>
+                                                                            <h6 style="color: #d65d1a; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-phone"></i> Contact Information</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Email</label>
@@ -782,7 +787,7 @@ if ($message !== '' && !$MessageClass) {
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #667eea; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-sticky-note"></i> Additional Notes</h6>
+                                                                            <h6 style="color: #d65d1a; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-sticky-note"></i> Additional Notes</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Customer Remarks</label>
@@ -794,7 +799,7 @@ if ($message !== '' && !$MessageClass) {
                                                         </div>
 
                                                         <div class="panel panel-success" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #e07234 0%, #d65d1a 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-map-marker"></i> Primary Billing Address
                                                                 </h4>
@@ -803,7 +808,7 @@ if ($message !== '' && !$MessageClass) {
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #28a745; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-home"></i> Address Details</h6>
+                                                                            <h6 style="color: #e07234; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-home"></i> Address Details</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Address Line 1 <span style="color: red;">*</span></label>
@@ -820,7 +825,7 @@ if ($message !== '' && !$MessageClass) {
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #28a745; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-globe"></i> Location & Postal</h6>
+                                                                            <h6 style="color: #e07234; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-globe"></i> Location & Postal</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">State</label>
@@ -844,7 +849,7 @@ if ($message !== '' && !$MessageClass) {
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #28a745; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-image"></i> Branding</h6>
+                                                                            <h6 style="color: #e07234; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-image"></i> Branding</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Customer Logo</label>
@@ -857,7 +862,7 @@ if ($message !== '' && !$MessageClass) {
                                                         </div>
 
                                                         <div class="panel panel-warning" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #c95517 0%, #a94310 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-calculator"></i> Account & Compliance
                                                                 </h4>
@@ -866,7 +871,7 @@ if ($message !== '' && !$MessageClass) {
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #fd7e14; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-credit-card"></i> Financial Settings</h6>
+                                                                            <h6 style="color: #c95517; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-credit-card"></i> Financial Settings</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Credit Limit</label>
@@ -955,7 +960,7 @@ if ($message !== '' && !$MessageClass) {
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #fd7e14; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-user"></i> Contact Information</h6>
+                                                                            <h6 style="color: #c95517; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-user"></i> Contact Information</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Contact Name <span style="color: red;">*</span></label>
@@ -970,7 +975,7 @@ if ($message !== '' && !$MessageClass) {
                                                                             <input type="text" class="form-control" name="contact_telephone" placeholder="Contact Telephone" required>
                                                                         </div>
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px; margin-top: 15px;">
-                                                                            <h6 style="color: #fd7e14; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-phone"></i> Emergency Contact</h6>
+                                                                            <h6 style="color: #c95517; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-phone"></i> Emergency Contact</h6>
                                                                         </div>
                                                                         <div class="row">
                                                                             <div class="col-md-12">
@@ -998,7 +1003,7 @@ if ($message !== '' && !$MessageClass) {
                                                             </div>
 
                                                         <div class="panel panel-danger" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #b84a12 0%, #94380d 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-cogs"></i> Status & Access
                                                                 </h4>
@@ -1007,7 +1012,7 @@ if ($message !== '' && !$MessageClass) {
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #dc3545; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-toggle-on"></i> Account Status</h6>
+                                                                            <h6 style="color: #b84a12; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-toggle-on"></i> Account Status</h6>
                                                                         </div>
                                                                         <?php if ($canManageCustomerAccess): ?>
                                                                             <div class="alert alert-info" style="margin-bottom: 15px; padding: 10px 12px;">
@@ -1061,7 +1066,7 @@ if ($message !== '' && !$MessageClass) {
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #dc3545; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-clock"></i> Repeat Settings</h6>
+                                                                            <h6 style="color: #b84a12; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-clock"></i> Repeat Settings</h6>
                                                                         </div>
                                                                         <div class="row">
                                                                             <div class="col-md-6">
@@ -1090,7 +1095,7 @@ if ($message !== '' && !$MessageClass) {
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px;">
-                                                                            <h6 style="color: #dc3545; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-sticky-note"></i> Additional Notes</h6>
+                                                                            <h6 style="color: #b84a12; margin-top: 0; margin-bottom: 10px;"><i class="fa fa-sticky-note"></i> Additional Notes</h6>
                                                                         </div>
                                                                         <div class="form-group" style="margin-bottom: 10px;">
                                                                             <label class="control-label" style="font-weight: 600; color: #555;">Customer Note</label>
@@ -1101,7 +1106,7 @@ if ($message !== '' && !$MessageClass) {
                                                             </div>
 
                                                         <div class="panel panel-info" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #a94310 0%, #7f2f0a 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-truck"></i> Shipping Addresses
                                                                 </h4>
@@ -1151,7 +1156,7 @@ if ($message !== '' && !$MessageClass) {
                                                         </div>
 
                                                         <div class="panel panel-default" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #f08345 0%, #d65d1a 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-credit-card"></i> Payment Options
                                                                 </h4>

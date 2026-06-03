@@ -88,36 +88,6 @@ function getContent() {
                 opacity: 0.9;
             }
 
-            .page-content .supplier-action-buttons .btn.action-btn.btn-info,
-            .page-content .supplier-action-buttons .btn.action-btn.btn-info:hover,
-            .page-content .supplier-action-buttons .btn.action-btn.btn-info:focus {
-                background-color: #3598dc !important;
-                border-color: #3598dc !important;
-                color: #fff !important;
-                opacity: 1 !important;
-            }
-
-            .page-content .supplier-action-buttons .btn.action-btn.btn-default,
-            .page-content .supplier-action-buttons .btn.action-btn.btn-default:hover,
-            .page-content .supplier-action-buttons .btn.action-btn.btn-default:focus {
-                background-color: #e1e5ec !important;
-                border-color: #ccd1d9 !important;
-                color: #333 !important;
-                opacity: 1 !important;
-            }
-
-            .page-content .supplier-action-buttons .btn.action-btn.btn-danger,
-            .page-content .supplier-action-buttons .btn.action-btn.btn-danger:hover,
-            .page-content .supplier-action-buttons .btn.action-btn.btn-danger:focus {
-                background-color: #e7505a !important;
-                border-color: #e7505a !important;
-                color: #fff !important;
-                opacity: 1 !important;
-            }
-
-            .page-content .btn-group.supplier-action-buttons {
-                background-color: #fff !important;
-            }
         </style>
        </head>
     <!-- END HEAD -->
@@ -210,8 +180,8 @@ function getContent() {
                                                 <td><?php  echo  $query['supplier_note']; ?> </td>
                                                 <td> 
                                                         <div class="btn-group supplier-action-buttons">
-                                                    <a href="supplier_view.php?supplierID=<?php echo $supid; ?>" class="btn btn-xs btn-info action-btn" title="View Supplier"><i class="fa fa-eye"></i></a>
                                                     <a href="edit-supplier.php?supplierID=<?php echo $supid; ?>" class="btn btn-xs btn-default action-btn" title="Edit Supplier"><i class="fa fa-pencil"></i></a>
+                                                    <a href="supplier_view.php?supplierID=<?php echo $supid; ?>" class="btn btn-xs bg-olive action-btn" title="View Supplier"><i class="glyphicon glyphicon-search"></i></a>
                                                     <a href="manage-supplier.php?deleteID=<?php echo $supid; ?>" class="btn btn-xs btn-danger action-btn" title="Delete Supplier"><i class="glyphicon glyphicon-trash"></i></a>
                                         </div>
                                                 </td>

@@ -176,14 +176,14 @@ function load_warranty()
             .specifications-table th { background: #f4f6fb; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #5d6d8a; }
             /* Colorful card header for customer detail page */
             .customer-card-header {
-                background: linear-gradient(90deg, #028d7aff 0%, #066c74ff 100%);
+                background: linear-gradient(135deg, #d65d1a 0%, #b84a12 100%);
                 color: #fff;
                 padding: 4px 4px;
                 border-radius: 8px 8px 0 0;
                 font-size: 20px;
                 font-weight: 700;
                 letter-spacing: 0.08em;
-                box-shadow: 0 2px 8px rgba(255,126,95,0.12);
+                box-shadow: 0 2px 8px rgba(214,93,26,0.12);
                 margin-bottom: 0;
                 display: flex;
                 align-items: center;
@@ -196,20 +196,21 @@ function load_warranty()
             }
             /* Section card h4 headers with same color design as customer header */
             .section-card {
-                background: linear-gradient(90deg, #028d7aff 0%, #066c74ff 100%);
+                background: linear-gradient(135deg, #e07234 0%, #d65d1a 100%);
                 color: #fff;
                 padding: 8px 16px;
                 border-radius: 8px 8px 0 0;
                 font-size: 16px;
                 font-weight: 600;
                 letter-spacing: 0.08em;
-                box-shadow: 0 2px 8px rgba(255,126,95,0.12);
+                box-shadow: 0 2px 8px rgba(224,114,52,0.16);
                 margin-bottom: 0;
                 display: flex;
                 align-items: center;
                 gap: 12px;
             }
             .section-card.h4 {
+                background: #7f2f0a;
                 font-size: 14px;
                 padding: 6px 12px;
             }
