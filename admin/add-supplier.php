@@ -277,7 +277,7 @@ try {
                                                 <form action="" id="frnAddsupplier" class="form-horizontal form-bordered form-row-stripped" method="POST" enctype="multipart/form-data">
                                                     <div class="form-body">
                                                         <div class="panel panel-primary" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #d65d1a 0%, #b84a12 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-user"></i> Basic Information
                                                                 </h4>
@@ -354,7 +354,7 @@ try {
                                                         </div>
 
                                                         <div class="panel panel-success" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #e07234 0%, #d65d1a 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-map-marker"></i> Address Information
                                                                 </h4>
@@ -394,7 +394,7 @@ try {
                                                         </div>
 
                                                         <div class="panel panel-warning" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #c95517 0%, #a94310 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-credit-card"></i> Financial & Compliance
                                                                 </h4>
@@ -469,7 +469,7 @@ try {
                                                         </div>
 
                                                         <div class="panel panel-danger" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #b84a12 0%, #94380d 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-exclamation-triangle"></i> Emergency & Notes
                                                                 </h4>
@@ -521,7 +521,7 @@ try {
                                                         </div>
 
                                                         <div class="panel panel-info" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #f08345 0%, #d65d1a 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-truck"></i> Shipping Addresses
                                                                 </h4>
@@ -667,7 +667,7 @@ try {
                                                         </div>
 
                                                         <div class="panel panel-default" style="margin-bottom: 20px;">
-                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white; padding: 12px 15px;">
+                                                            <div class="panel-heading" style="background: linear-gradient(135deg, #a94310 0%, #7f2f0a 100%); color: white; padding: 12px 15px;">
                                                                 <h4 class="panel-title" style="margin: 0; font-size: 16px; font-weight: 600;">
                                                                     <i class="fa fa-credit-card"></i> Payment Options
                                                                 </h4>
