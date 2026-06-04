@@ -162,6 +162,11 @@ foreach ($ingredients as $ing) {
             border-radius: 8px;
             margin-bottom: 20px;
         }
+        .alert-info {
+            background-color: #f0905b;
+            border-color: #f0905b;
+            color: #fff;
+        }
     </style>
 </head>
 <body class="page-sidebar-closed-hide-logo page-content-white" style="background:#faf6f0;">

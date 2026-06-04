@@ -193,6 +193,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['generate_report'])) {
         .grand-summary h4 {
             margin-top: 0;
         }
+        .alert-info {
+            background-color: #f0905b;
+            border-color: #f0905b;
+            color: #fff;
+        }
         @media print {
             .no-print { display: none !important; }
             .report-card { box-shadow: none; border: 1px solid #ddd; }
