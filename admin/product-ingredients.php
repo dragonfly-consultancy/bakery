@@ -59,7 +59,7 @@ foreach ($ingredients as $ing) {
     <link href="assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
     <style>
         .recipe-header {
-            background: linear-gradient(90deg, #028d7aff 0%, #066c74ff 100%);
+            background: #c2622d;
             color: #fff;
             padding: 15px 20px;
             border-radius: 8px 8px 0 0;
