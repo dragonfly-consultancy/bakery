@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -11,7 +11,7 @@ ensureMasterWebsiteStatusColumns($db);
 $generalSettings = getGeneralSettings($db);
 $frontSettings = getFrontWebSettings($db);
 $siteName = trim($generalSettings['SiteName'] ?? '');
-$siteName = $siteName !== '' ? $siteName : 'Bakery Shop';
+$siteName = $siteName !== '' ? $siteName : 'Voltix Electricals';
 
 $homeBannerItems = array(
     array(
@@ -39,7 +39,7 @@ $homeBannerItems = array_values(array_filter($homeBannerItems, function ($banner
 
 $promoBadge = trim($frontSettings['promo_badge'] ?? '');
 $promoTitle = trim($frontSettings['promo_title'] ?? '');
-$promoTitle = $promoTitle !== '' ? $promoTitle : 'Best Quality Bakery Products';
+$promoTitle = $promoTitle !== '' ? $promoTitle : 'Complete Electrical & Lighting Solutions';
 $promoDescription = trim($frontSettings['promo_description'] ?? '');
 $promoButtonLabel = trim($frontSettings['promo_button_label'] ?? '');
 $promoButtonLabel = $promoButtonLabel !== '' ? $promoButtonLabel : 'Shop Now';
@@ -91,7 +91,8 @@ function bestSeller()
 function categories()
 {
     $db = new Database();
-    $query = $db->getRows('SELECT category_master.value1 ,category_master.value2 ,category_master.category_id , category_master.category_name from category_master 
+    $query = $db->getRows('SELECT category_master.value1, category_master.value2, category_master.category_id, category_master.category_name 
+    FROM category_master 
     INNER JOIN type_master ON type_master.type_id = category_master.type_id
     INNER JOIN gorup_master ON gorup_master.group_id = type_master.group_id
     INNER JOIN item_master ON item_master.item_category = category_master.category_id
@@ -100,9 +101,10 @@ function categories()
     AND category_master.website_status = "Y"
     AND type_master.website_status = "Y"
     AND gorup_master.website_status = "Y"
-    AND category_master.category_id IN(209)
-    group by category_master.category_id
-    ORDER BY category_master.category_id DESC');
+    GROUP BY category_master.category_id
+    HAVING SUM(fifo.ft_blanace) > 0
+    ORDER BY category_master.category_id ASC
+    LIMIT 4');
     return $query;
 }
 
@@ -495,7 +497,10 @@ function SubCategoryList()
     </style>
 </head>
 
-<body style="background:#faf6f0;">
+<body style="background:#f8fafc;">
+    <div class="tech-header-notice">
+        <span class="bolt">⚡</span> <strong>VOLTIX TECH STORE</strong> — Certified Electrical &amp; Smart Energy Components | Free Express Delivery Over $150
+    </div>
     <div class="ps-page">
         <?php include('common/header_home.php'); ?>
         <div class="ps-home ps-home--1">
@@ -528,11 +533,6 @@ function SubCategoryList()
         <a href="<?php echo htmlspecialchars($sliderLink); ?>">
         <?php } ?>
         <img class="ps-banner__image" src="<?php echo htmlspecialchars($sliderImage); ?>" alt="<?php echo htmlspecialchars($siteName); ?>" />
-        <?php if ($i == 1) { ?>
-        <div class="slider-custom-text">
-            <i>The perfect pizza base</i>
-        </div>
-        <?php } ?>
         <?php if ($sliderLink !== '#') { ?>
         </a>
         <?php } ?>
@@ -554,19 +554,80 @@ function SubCategoryList()
 </div>
             </section>
             <div class="ps-home__content">
-                <div class="ps-hero-intro">
-                    <div class="ps-hero-intro__inner">
-                        <div class="ps-hero-intro__text">
-                            <span class="ps-hero-intro__eyebrow">&#10086;</span>
-                            <h2 class="ps-hero-intro__title">Gluten Free<br>Artisan Bakers</h2>
-                            <div class="ps-hero-intro__copy">
-                                <p>We believe in baking delicious, fresh, bakery products, free from preservatives and additives. All our products are handcrafted in a gluten free environment at our bakery.</p>
-                                <p>We are artisan bakers, passionately working with different flours, creating new recipes for your enjoyment.</p>
+                <div class="tech-hero-section">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-lg-7">
+                                <div class="tech-hero-pill">
+                                    <span class="pulse-dot"></span>
+                                    Next-Gen Electrical &amp; IoT Hardware
+                                </div>
+                                <h1 class="tech-hero-heading">
+                                    Intelligent Power, <br>
+                                    <span class="tech-gradient-text">Precision &amp; Protection</span>
+                                </h1>
+                                <p class="tech-hero-desc">
+                                    Engineered for certified electricians, contractors, and smart facilities. Explore heavy-duty copper cables, DIN-rail switchgear, smart WiFi relays, and pure sine solar systems.
+                                </p>
+                                <div class="tech-hero-actions">
+                                    <a href="<?php echo site_url(); ?>search.php" class="tech-btn-primary">
+                                        <span>Explore Full Catalog</span> &rarr;
+                                    </a>
+                                    <a href="<?php echo site_url(); ?>search.php?cat=circuit-breakers" class="tech-btn-outline">
+                                        <span>Switchgear &amp; MCB</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-5 text-center mt-4 mt-lg-0">
+                                <div style="position:relative;display:inline-block;">
+                                    <div style="position:absolute;inset:-20px;background:radial-gradient(circle,rgba(0,240,255,0.25) 0%,transparent 70%);filter:blur(30px);z-index:0;"></div>
+                                    <img src="<?php echo site_url(); ?>images/product_img/el_inverter.png" style="max-height: 290px; width: auto; border-radius: 18px; position:relative; z-index:1; filter: drop-shadow(0 20px 35px rgba(0,0,0,0.6));" alt="Voltix Tech Hardware" />
+                                </div>
                             </div>
                         </div>
-                        <div class="ps-hero-intro__media">
-                            <img class="ps-hero-intro__loaf ps-hero-intro__loaf--one" src="<?php echo site_url(); ?>img/Precinct_Loaf_Fruit_VIS_LR_v2.png" alt="Gluten Free Fruit Loaf" />
-                            <img class="ps-hero-intro__loaf ps-hero-intro__loaf--two" src="<?php echo site_url(); ?>img/Precinct_Loaf_Buckwheat_VIS_LR.png" alt="Gluten Free Buckwheat and Chia Loaf" />
+                    </div>
+                </div>
+
+                <!-- Live Tech Stats & Guarantees -->
+                <div class="tech-stats-bar">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6 col-md-3">
+                                <div class="tech-stat-item">
+                                    <div class="tech-stat-icon"><i class="fa fa-shield"></i></div>
+                                    <div class="tech-stat-text">
+                                        <h5>100% Certified</h5>
+                                        <p>AS/NZS &amp; CE Compliant</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="tech-stat-item">
+                                    <div class="tech-stat-icon"><i class="fa fa-bolt"></i></div>
+                                    <div class="tech-stat-text">
+                                        <h5>Fast Dispatch</h5>
+                                        <p>Same-day dispatch &lt; 2PM</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="tech-stat-item">
+                                    <div class="tech-stat-icon"><i class="fa fa-certificate"></i></div>
+                                    <div class="tech-stat-text">
+                                        <h5>Up to 5Y Warranty</h5>
+                                        <p>Guaranteed replacement</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="tech-stat-item">
+                                    <div class="tech-stat-icon"><i class="fa fa-cubes"></i></div>
+                                    <div class="tech-stat-text">
+                                        <h5>Trade Accounts</h5>
+                                        <p>Direct volume discounts</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -574,22 +635,19 @@ function SubCategoryList()
                 <div class="container">
                    
                     <section class="custom-category-section">
+                        <h3 class="ps-section__title" style="margin-bottom: 24px; font-size: 24px; font-weight: 800;">Featured Tech Categories</h3>
                         <div class="custom-category-grid">
                             <?php
-                                $hardcodedCategories = [
-                                    ['type_name' => 'GFP', 'image' => 'gfp.png', 'clean_url' => 'gfp'],
-                                    ['type_name' => 'STRADA', 'image' => 'strada.jpg', 'clean_url' => 'strada'],
-                                    ['type_name' => 'PALIO', 'image' => 'palio.png', 'clean_url' => 'palio']
-                                ];
-                                foreach ($hardcodedCategories as $query) {
-                                    $CategoryName = $query['type_name'];
-                                    $CategoryImage = $query['image'];
-                                    $clean_url = $query['clean_url'];
+                                $categoryList = TypeList();
+                                foreach (array_slice($categoryList, 0, 6) as $catQuery) {
+                                    $CategoryName = $catQuery['type_name'];
+                                    $CategoryImage = !empty($catQuery['image']) ? $catQuery['image'] : 'led_light.png';
+                                    $clean_url = $catQuery['clean_url'];
                                 ?>
                                 <div class="custom-category-item">
-                                    <a class="custom-category-link" href="<?php echo site_url()."products/".$clean_url?>">
+                                    <a class="custom-category-link" href="<?php echo site_url() . "products/" . $clean_url; ?>">
                                         <div class="custom-category-img-wrap">
-                                            <img src="<?php echo site_url()."img/category/" . $CategoryImage; ?>" alt="<?php echo htmlspecialchars($CategoryName); ?>">
+                                            <img src="<?php echo site_url() . "img/category/" . $CategoryImage; ?>" alt="<?php echo htmlspecialchars($CategoryName); ?>" style="max-height:110px;object-fit:contain;">
                                         </div>
                                         <h3 class="custom-category-name"><?php echo htmlspecialchars($CategoryName); ?></h3>
                                     </a>
@@ -601,7 +659,7 @@ function SubCategoryList()
                 </div>
                 <section class="ps-section--latest">
                     <div class="container">
-                        <h3 class="ps-section__title">Latest products</h3>
+                        <h3 class="ps-section__title" style="font-size:24px;font-weight:800;">Latest Tech Arrivals</h3>
                         <div class="ps-section__carousel">
                             <div class="owl-carousel" data-owl-auto="false" data-owl-loop="true" data-owl-speed="13000" data-owl-gap="0" data-owl-nav="true" data-owl-dots="true" data-owl-item="5" data-owl-item-xs="2" data-owl-item-sm="2" data-owl-item-md="3" data-owl-item-lg="5" data-owl-item-xl="5" data-owl-duration="1000" data-owl-mousedrag="on">
                                 <?php
@@ -711,19 +769,19 @@ function SubCategoryList()
                                 <div class="col-12 col-md-4">
                                     <div class="ps-block__image">
                                         <section class="ps-home__banner">
-                                            <div class="ps-banner" style="background:#FD8D27;"><?php if ($promoImageUrl !== '') { ?><img class="ps-banner__overlay" src="<?php echo htmlspecialchars($promoImageUrl); ?>" alt="<?php echo htmlspecialchars($promoTitle); ?>" /><?php } ?>
+                                            <div class="ps-banner" style="background: linear-gradient(135deg, #090d16 0%, #1e293b 100%); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 16px; padding: 24px; color: #fff;"><?php if ($promoImageUrl !== '') { ?><img class="ps-banner__overlay" src="<?php echo htmlspecialchars($promoImageUrl); ?>" alt="<?php echo htmlspecialchars($promoTitle); ?>" /><?php } ?>
                                                 <div class="ps-banner__block">
                                                     <div class="ps-banner__content">
-                                                        <h2 class="ps-banner__title"><?php echo nl2br(htmlspecialchars($promoTitle)); ?></h2>
+                                                        <h2 class="ps-banner__title" style="color: #ffffff; font-size: 26px; font-weight: 800;"><?php echo nl2br(htmlspecialchars($promoTitle)); ?></h2>
                                                         <?php if ($promoBadge !== '') { ?>
-                                                        <div class="ps-banner__btn-group">
-                                                            <div class="ps-banner__btn"><img src="img/icon/icon11.png" alt="alt" /><?php echo htmlspecialchars($promoBadge); ?></div>
+                                                        <div class="ps-banner__btn-group" style="margin: 12px 0;">
+                                                            <div class="ps-banner__btn" style="background: rgba(0,240,255,0.15); color: #00f0ff; border: 1px solid rgba(0,240,255,0.3); border-radius: 999px; padding: 6px 14px; font-size: 11px; font-weight: 800;"><?php echo htmlspecialchars($promoBadge); ?></div>
                                                         </div>
                                                         <?php } ?>
                                                         <?php if ($promoDescription !== '') { ?>
-                                                        <p style="max-width: 320px; margin-bottom: 18px;"><?php echo nl2br(htmlspecialchars($promoDescription)); ?></p>
+                                                        <p style="max-width: 320px; margin-bottom: 18px; color: #94a3b8; font-size: 14px; line-height: 1.5;"><?php echo nl2br(htmlspecialchars($promoDescription)); ?></p>
                                                         <?php } ?>
-                                                        <a class="bg-white ps-banner__shop" href="<?php echo htmlspecialchars($promoLinkUrl); ?>"><?php echo htmlspecialchars($promoButtonLabel); ?></a>
+                                                        <a class="tech-btn-primary" style="padding: 10px 20px; font-size: 12px;" href="<?php echo htmlspecialchars($promoLinkUrl); ?>"><?php echo htmlspecialchars($promoButtonLabel); ?></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -785,7 +843,7 @@ function SubCategoryList()
 
                     <?php  } ?>
                     <section class="ps-section--featured">
-                        <h3 class="ps-section__title">Featured products</h3>
+                        <h3 class="ps-section__title" style="font-size: 24px; font-weight: 800; margin-bottom: 24px;">⚡ Featured Power &amp; Smart Equipment</h3>
                         <div class="ps-section__content">
                             <div class="row m-0">
                                 <?php

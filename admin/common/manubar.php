@@ -16,6 +16,9 @@ $MessageClass = $queryComapnyMessage['class'];
 <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
             <div class="page-header-inner ">
+                 <div style="display:flex;align-items:center;padding:0 16px;color:#00f0ff;font-weight:900;font-size:14px;letter-spacing:0.06em;white-space:nowrap;">
+                     <span style="color:#f59e0b;font-size:16px;margin-right:6px;">⚡</span> VOLTIX TECH
+                 </div>
                  <?php include('horizontal_menu.php'); ?>
                 <!-- BEGIN TOP NAVIGATION MENU -->
                 <div class="top-menu">

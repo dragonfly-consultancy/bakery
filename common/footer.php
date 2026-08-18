@@ -168,11 +168,11 @@
 
             <div class="custom-footer-info-wrapper">
                 <div class="custom-footer-contact">
-                    <h5><?php echo htmlspecialchars($SiteName !== '' ? $SiteName : 'GF Precinct Pty Ltd.'); ?></h5>
+                    <h5><?php echo htmlspecialchars($SiteName !== '' ? $SiteName : 'Voltix Electricals Pty Ltd.'); ?></h5>
                     <p>
-                        <?php echo nl2br(htmlspecialchars($system_address !== '' ? $system_address : "31 Parkhurst Drive,\nKnoxfield, Victoria, 3180")); ?><br>
-                        <?php echo htmlspecialchars((!empty($system_email)) ? $system_email : 'admin@gfprecinct.com.au'); ?><br>
-                        <?php echo htmlspecialchars((!empty($system_contactUs)) ? $system_contactUs : '(03) 9837 5943'); ?>
+                        <?php echo nl2br(htmlspecialchars($system_address !== '' ? $system_address : "45 Industrial Parkway,\nSector 4, Tech Zone, VIC 3000")); ?><br>
+                        <?php echo htmlspecialchars((!empty($system_email)) ? $system_email : 'sales@voltixelectricals.com'); ?><br>
+                        <?php echo htmlspecialchars((!empty($system_contactUs)) ? $system_contactUs : '+61 3 9876 5432'); ?>
                     </p>
                 </div>
                 <div class="custom-footer-social-copy">
@@ -180,7 +180,7 @@
                         <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>
                         <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a>
                     </div>
-                    <p class="custom-footer-copy">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($SiteName !== '' ? $SiteName : 'GF Precinct Pty Ltd.'); ?></p>
+                    <p class="custom-footer-copy">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($SiteName !== '' ? $SiteName : 'Voltix Electricals Pty Ltd.'); ?></p>
                 </div>
             </div>
 

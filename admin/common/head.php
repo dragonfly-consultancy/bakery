@@ -1,7 +1,8 @@
 
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all" rel="stylesheet" type="text/css" />
-        <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
         <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -37,25 +38,29 @@
         
 
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> 
+        <link rel="shortcut icon" href="../assets/img/logo/voltix_logo.png" type="image/png" /> 
 
         <link href="assets/layouts/layout/css/celander_jquery-ui.css" rel="stylesheet" type="text/css" />
 
 <style>
 :root {
-    --bg: #faf6f0;
+    --bg: #f8fafc;
     --surface: #ffffff;
-    --ink: #2b2218;
-    --muted: #8a7b66;
-    --line: #e7ddcd;
-    --accent: #c2622d;
-    --accent-d: #a44e1f;
-    --accent-soft: #f6ece0;
-    --sidebar: #2b211a;
-    --sidebar-ink: #e8ddc9;
-    --sidebar-active: #c2622d;
-    --ok: #3f7d52;
-    --err: #a13d2d;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --accent: #0284c7;
+    --accent-d: #0369a1;
+    --accent-soft: #e0f2fe;
+    --sidebar: #090d16;
+    --sidebar-ink: #cbd5e1;
+    --sidebar-active: #00f0ff;
+    --ok: #10b981;
+    --err: #ef4444;
+}
+
+body, .page-header, .page-content, .portlet {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 /* Override sidebar layout to hide sidebar and use full width */

@@ -21,14 +21,14 @@ if (!function_exists('generalSettingsDefaults')) {
     function generalSettingsDefaults()
     {
         return array(
-            'SiteName' => 'Bakery Shop',
-            'logo' => '',
-            'footerLogo' => '',
+            'SiteName' => 'Voltix Electricals',
+            'logo' => 'assets/img/logo/voltix_logo.png',
+            'footerLogo' => 'assets/img/logo/voltix_logo.png',
             'favIcon' => '',
-            'address' => '',
+            'address' => '45 Industrial Parkway, Sector 4, Tech Zone, VIC 3000',
             'maintainMode' => 0,
-            'system_email' => '',
-            'contactUs' => ''
+            'system_email' => 'sales@voltixelectricals.com',
+            'contactUs' => '+61 3 9876 5432'
         );
     }
 }
@@ -38,27 +38,27 @@ if (!function_exists('frontWebSettingsDefaults')) {
     {
         return array(
             'id' => 1,
-            'header_notice' => 'Welcome to Our Bakery Shop - Free Shipping on orders above $50',
-            'hero_badge' => 'Fresh Daily',
-            'hero_title' => 'Quality Bakery Products',
-            'hero_button_label' => 'Shop Now',
+            'header_notice' => '⚡ Premium Electrical & Lighting Supplies — Free Delivery on Orders Over $150!',
+            'hero_badge' => 'Certified & Guaranteed',
+            'hero_title' => 'High Performance Electrical & Lighting Solutions',
+            'hero_button_label' => 'Explore Products',
             'hero_button_link' => 'search.php',
-            'hero_image' => '',
+            'hero_image' => 'assets/img/slider/electrical_hero.jpg',
             'banner_one_image' => '',
-            'banner_one_badge' => 'Fresh Daily',
-            'banner_one_title' => 'Best Quality Products',
-            'banner_one_button_label' => 'Shop Now',
-            'banner_one_button_link' => 'search.php',
+            'banner_one_badge' => 'Industrial & Commercial',
+            'banner_one_title' => 'Smart Switchgear & Circuit Breakers',
+            'banner_one_button_label' => 'Shop Switchgear',
+            'banner_one_button_link' => 'search.php?cat=circuit-breakers',
             'banner_two_image' => '',
-            'banner_two_badge' => 'Hot & Spicy',
-            'banner_two_title' => 'Freshly Baked Pastry',
-            'banner_two_button_label' => 'Shop Now',
-            'banner_two_button_link' => 'search.php',
+            'banner_two_badge' => 'Energy Efficient',
+            'banner_two_title' => 'Modern LED Panels & Smart Lighting',
+            'banner_two_button_label' => 'Shop Lighting',
+            'banner_two_button_link' => 'search.php?cat=led-lighting',
             'promo_image' => '',
-            'promo_badge' => 'Fresh Everyday',
-            'promo_title' => 'Best Quality Bakery Products',
-            'promo_description' => "Handcrafted with love using the finest ingredients.\nOrder online and get delivered fresh to your doorstep.",
-            'promo_button_label' => 'Shop Now',
+            'promo_badge' => 'Trade & Retail Discounts',
+            'promo_title' => 'Complete Electrical Solutions for Homes, Offices & Industry',
+            'promo_description' => "Browse our extensive range of high-grade copper cables, certified switchgear, energy-saving LED fixtures, and professional testing tools.",
+            'promo_button_label' => 'Shop All Products',
             'promo_button_link' => 'search.php'
         );
     }
@@ -443,7 +443,7 @@ if (!function_exists('frontWebResolveProductImagePath')) {
             $candidates[] = 'image/product_img/' . ltrim($imageName, '/');
         }
 
-        $workspaceRoot = dirname(__DIR__, 2);
+        $workspaceRoot = dirname(__DIR__);
         $resolvedPath = '';
 
         foreach ($candidates as $candidate) {

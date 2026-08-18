@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="heroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.1" />
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="600" fill="url(#heroBg)" />
+  <circle cx="1300" cy="300" r="280" fill="url(#heroGlow)" />
+  
+  <!-- Electrical tech lines -->
+  <g opacity="0.15" stroke="#38bdf8" stroke-width="2" fill="none">
+    <path d="M100,500 L400,500 L500,400 L800,400 L900,200 L1400,200" />
+    <path d="M200,550 L600,550 L700,450 L1100,450 L1200,300 L1500,300" />
+    <circle cx="500" cy="400" r="6" fill="#fbbf24" />
+    <circle cx="900" cy="200" r="6" fill="#38bdf8" />
+    <circle cx="700" cy="450" r="6" fill="#fbbf24" />
+    <circle cx="1200" cy="300" r="6" fill="#38bdf8" />
+  </g>
+
+  <!-- High-impact banner text -->
+  <text x="120" y="220" fill="#f59e0b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" letter-spacing="4">⚡ PROFESSIONAL ELECTRICAL SUPPLIES</text>
+  <text x="120" y="300" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="64" font-weight="900" letter-spacing="-1">Power, Precision &amp; Safety</text>
+  <text x="120" y="355" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="400">Certified switchgear, copper cables, energy-saving LED lighting &amp; testing gear.</text>
+  
+  <!-- Badges -->
+  <g transform="translate(120, 420)">
+    <rect width="200" height="50" rx="25" fill="#f59e0b" />
+    <text x="100" y="31" text-anchor="middle" fill="#0f172a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="800">SHOP PRODUCTS</text>
+  </g>
+  <g transform="translate(340, 420)">
+    <rect width="220" height="50" rx="25" fill="none" stroke="#ffffff" stroke-width="2" />
+    <text x="110" y="31" text-anchor="middle" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700">EXPLORE LIGHTING</text>
+  </g>
+</svg>

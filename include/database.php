@@ -7,7 +7,7 @@ class Database{
 
 	//connect to db
 	//connect to db
-	public function __construct($username = "root" , $password = "" , $host = "localhost" , $dbname = "beakryuat", $options =[ ]){
+	public function __construct($username = "root" , $password = "" , $host = "localhost" , $dbname = "beakryuat_live", $options =[ ]){
 		$this->isConn = TRUE;
 		try{
 

@@ -95,16 +95,15 @@ if (isSuperAdmin()) {
 
 <head>
         <meta charset="utf-8" />
-        <title>STOCK MANAGER SYSTEM</title>
+        <title>Voltix Tech - Management Dashboard</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="" name="description" />
-        <meta content="" name="author" />
+        <meta content="Voltix Tech Admin Management" name="description" />
         <?php include('common/head.php'); ?>
         
        </head>
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo" style="background:#faf6f0;">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo" style="background:#f8fafc;">
       <?php include('common/manubar.php'); ?>
         <div class="clearfix"></div>
         <div class="page-container">

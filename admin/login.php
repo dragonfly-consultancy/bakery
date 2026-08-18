@@ -86,13 +86,10 @@ function load_location()
       $query = $db->getRows('SELECT * FROM location_master');
       $data = $query;
         foreach($data as $query) 
-            {   
-
-                $id = $query['supplier_id']; 
-                $output .= '<option value="'.$query['id'].'">'.$query['name'].'</option>';
-
-            }
-            return $output;  
+        {   
+            $output .= '<option value="'.$query['id'].'">'.htmlspecialchars($query['name']).'</option>';
+        }
+        return $output;  
  }  
 
 ?>
@@ -108,158 +105,127 @@ function load_location()
 
 <head>
         <meta charset="utf-8" />
-        <title>User Login </title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="" name="description" />
-        <meta content="" name="author" />
-        <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all" rel="stylesheet" type="text/css" />
-        <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
-        <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-        <!-- END GLOBAL MANDATORY STYLES -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
-        <!-- END THEME GLOBAL STYLES -->
-        <!-- BEGIN PAGE LEVEL STYLES -->
-        <link href="assets/pages/css/login-2.min.css" rel="stylesheet" type="text/css" />
-        <!-- END PAGE LEVEL STYLES -->
-        <!-- BEGIN THEME LAYOUT STYLES -->
-        <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" />
     <style>
+    body.login {
+        background: radial-gradient(circle at 50% 20%, #1e293b 0%, #090d16 100%) !important;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .login .logo {
+        text-align: center;
+        margin-bottom: 24px !important;
+    }
+    .login .logo img {
+        max-height: 54px;
+        filter: drop-shadow(0 4px 16px rgba(0, 240, 255, 0.3));
+    }
+    .login .content {
+        background: #0f172a !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 16px !important;
+        padding: 32px !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 240, 255, 0.1) !important;
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto !important;
+    }
+    .login .content .form-title {
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 24px;
+        letter-spacing: -0.02em;
+    }
     .login .content .form-control {
-        background-color: #ffffff;
-    background-image: none;
-    border: 1px solid #999999;
-    border-radius: 0;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-    color: #333333;
-    display: block;
-    font-size: 14px;
-    height: 34px;
-    line-height: 1.42857;
-    padding: 6px 12px;
-    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    width: 100%;
-}
-
-.login .content .forget-form, .login .content .login-form {
-    padding: 0;
-    margin: 0;
-    padding: 10px;
-    background: white;
-}
-
-button:not(.close),
-.btn,
-button[type="button"]:not(.close),
-button[type="submit"]:not(.close),
-input[type="button"],
-input[type="submit"],
-input[type="reset"],
-a.btn,
-[class*="btn-"] {
-    background: var(--accent-soft, #f6ece0) !important;
-    color: var(--ink, #2b2218) !important;
-    font-weight: 500 !important;
-    border-color: var(--accent-soft, #f6ece0) !important;
-}
-
-button:not(.close):hover,
-.btn:hover,
-button:not(.close):focus,
-.btn:focus,
-input[type="button"]:hover,
-input[type="submit"]:hover,
-input[type="button"]:focus,
-input[type="submit"]:focus,
-a.btn:hover,
-a.btn:focus,
-[class*="btn-"]:hover,
-[class*="btn-"]:focus {
-    background: var(--accent-soft, #f6ece0) !important;
-    color: var(--ink, #2b2218) !important;
-    border-color: var(--accent-soft, #f6ece0) !important;
-    opacity: 0.9;
-}
-
-button.close,
-button.close:hover,
-button.close:focus {
-    background: transparent !important;
-    border-color: transparent !important;
-    color: inherit !important;
-    font-weight: normal !important;
-}
+        background: #1e293b !important;
+        border: 1px solid #334155 !important;
+        border-radius: 8px !important;
+        color: #ffffff !important;
+        height: 42px !important;
+        font-size: 14px !important;
+        padding: 8px 14px !important;
+        transition: all 0.2s ease;
+    }
+    .login .content .form-control:focus {
+        border-color: #00f0ff !important;
+        box-shadow: 0 0 12px rgba(0, 240, 255, 0.3) !important;
+    }
+    .login .content label {
+        color: #94a3b8 !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        margin-bottom: 6px;
+    }
+    #btn-login {
+        background: linear-gradient(135deg, #00f0ff 0%, #0284c7 100%) !important;
+        color: #090d16 !important;
+        border: none !important;
+        border-radius: 8px !important;
+        height: 44px !important;
+        font-size: 14px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.05em !important;
+        text-transform: uppercase !important;
+        box-shadow: 0 4px 16px rgba(0, 240, 255, 0.35) !important;
+        transition: all 0.2s ease !important;
+        margin-top: 10px;
+    }
+    #btn-login:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 22px rgba(0, 240, 255, 0.5) !important;
+    }
     </style>
     </head>
     <!-- END HEAD -->
 
-    <body class=" login" style="background-color:#090023;">
-        <div id="message"></div>
-      
-        <div class="logo" style="  margin: 1px auto 0; ">
-            <a href="">
-                <img src="assets/layouts/layout/img/logo.avif" alt="" /> </a>
-        </div>
-        <!-- END LOGO -->
-        <!-- BEGIN LOGIN -->
-        <div class="content" style="    margin: 1px auto;">
-            <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" id="login_form" method="POST">
-           <!--      <div class="form-title">
-                    <span class="form-title"><center><?php  $error_title; ?></center></span> <br>
-                    <span class="form-title" style="font-size:14px;text-align:center;"><?php  $error ;?></span>
-                </div> -->
-                <div class="alert alert-danger display-hide">
-                    <button class="close" data-close="alert"></button>
-                    <span> Enter any username and password. </span>
-                </div>
-                <div class="form-group">
-                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-                    <label class="control-label visible-ie8 visible-ie9">Username</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username" value="admin"/> </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Password</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" value="admin"/ > </div>
-                    <div class="form-group" >
-                                                <label ><strong style="color:white;">Select Location</strong></label>
-                                                <select class="form-control" name="location" >
-                                                   <?php echo load_location(); ?> 
-                                                    
-                                                </select>
-                                            </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn red btn-block uppercase" name="sub" id="btn-login" >Login</button>
-                </div>
-               
-                
-                
-            </form>
-            <!-- END LOGIN FORM -->
-           
+    <body class="login">
+        <div style="width:100%; max-width:440px;">
+            <div id="message"></div>
+          
+            <div class="logo">
+                <a href="<?php echo site_url(); ?>">
+                    <img src="../assets/img/logo/voltix_logo.png" alt="Voltix Tech Admin" />
+                </a>
+            </div>
             
-
+            <div class="content">
+                <div class="form-title">
+                    ⚡ Admin Portal Sign In
+                </div>
+                <!-- BEGIN LOGIN FORM -->
+                <form class="login-form" id="login_form" method="POST" style="background:transparent;padding:0;">
+                    <div class="alert alert-danger display-hide">
+                        <button class="close" data-close="alert"></button>
+                        <span> Enter username and password. </span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Username</label>
+                        <input class="form-control" type="text" autocomplete="off" placeholder="Enter username" name="username" value="admin" required/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Password</label>
+                        <input class="form-control" type="password" autocomplete="off" placeholder="Enter password" name="password" value="admin" required/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Dispatch Location</label>
+                        <select class="form-control" name="location">
+                            <?php echo load_location(); ?> 
+                        </select>
+                    </div>
+                    <div class="form-actions" style="border:none;padding:0;margin-top:16px;">
+                        <button type="submit" class="btn btn-block uppercase" name="sub" id="btn-login">Sign In &rarr;</button>
+                    </div>
+                </form>
+            </div>
         </div>
-       
-        <!-- END LOGIN -->
-        <!--[if lt IE 9]>
-<script src="assets/global/plugins/respond.min.js"></script>
-<script src="assets/global/plugins/excanvas.min.js"></script> 
-<![endif]-->
         <!-- BEGIN CORE PLUGINS -->
         <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-   
 </body>
 
 </html>
