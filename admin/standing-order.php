@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -8,6 +8,11 @@ include('include/customer_access.php');
 include('include/business_unit_cutoff.php');
 
 $db = new Database();
+
+if (function_exists('isStandingOrdersEnabled') && !isStandingOrdersEnabled($db)) {
+    header('Location: manage-orders.php?notice=standing_orders_disabled');
+    exit;
+}
 
 // Handle AJAX requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {

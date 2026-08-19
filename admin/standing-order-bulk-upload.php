@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 if (session_status() === PHP_SESSION_NONE) {
@@ -11,6 +11,12 @@ include('get_url.php');
 date_default_timezone_set("Asia/Colombo");
 
 $db = new Database();
+
+if (function_exists('isStandingOrdersEnabled') && !isStandingOrdersEnabled($db)) {
+    header('Location: manage-orders.php?notice=standing_orders_disabled');
+    exit;
+}
+
 $successSoIds = [];
 
 function h($v) {

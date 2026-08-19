@@ -201,4 +201,22 @@ function normalizeWebsiteStatus($value)
 {
 	return strtoupper((string) $value) === 'N' ? 'N' : 'Y';
 }
+
+function isStandingOrdersEnabled($db = null)
+{
+	static $cached = null;
+	if ($cached !== null) {
+		return $cached;
+	}
+	if ($db === null) {
+		$db = new Database();
+	}
+	try {
+		$row = $db->getRow('SELECT enable_standing_orders FROM general_settings WHERE id = 1 LIMIT 1');
+		$cached = isset($row['enable_standing_orders']) && ((int)$row['enable_standing_orders'] === 1);
+	} catch (Exception $e) {
+		$cached = false;
+	}
+	return $cached;
+}
 ?>

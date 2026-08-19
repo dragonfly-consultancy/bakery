@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -236,6 +236,8 @@ if (isset($_POST['save_settings'])) {
         $promoImagePath = handleFrontWebImageUpload('promo_image_file', 'banners', $promoImagePath, $uploadError);
     }
 
+    $enableStandingOrders = isset($_POST['enable_standing_orders']) ? 1 : 0;
+
     if ($uploadError !== '') {
         $message = $uploadError;
         $messageClass = 'alert-danger';
@@ -245,13 +247,13 @@ if (isset($_POST['save_settings'])) {
 
             if ($generalSettingsRow) {
                 $db->updateRow(
-                    'UPDATE general_settings SET SiteName = ?, logo = ?, footerLogo = ?, favIcon = ?, address = ?, system_email = ?, contactUs = ? WHERE id = 1',
-                    array($siteName, $logoPath, $footerLogoPath, $favIconPath, $address, $systemEmail, $contactUs)
+                    'UPDATE general_settings SET SiteName = ?, logo = ?, footerLogo = ?, favIcon = ?, address = ?, system_email = ?, contactUs = ?, enable_standing_orders = ? WHERE id = 1',
+                    array($siteName, $logoPath, $footerLogoPath, $favIconPath, $address, $systemEmail, $contactUs, $enableStandingOrders)
                 );
             } else {
                 $db->insertRow(
-                    'INSERT INTO general_settings (id, SiteName, logo, footerLogo, favIcon, address, system_email, contactUs) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                    array(1, $siteName, $logoPath, $footerLogoPath, $favIconPath, $address, $systemEmail, $contactUs)
+                    'INSERT INTO general_settings (id, SiteName, logo, footerLogo, favIcon, address, system_email, contactUs, enable_standing_orders) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    array(1, $siteName, $logoPath, $footerLogoPath, $favIconPath, $address, $systemEmail, $contactUs, $enableStandingOrders)
                 );
             }
 
@@ -462,6 +464,41 @@ $contactUs = $settings['contactUs'] ?? '';
                                 <?php renderImageUploadField('Header Logo', 'logo_file', $settings['logo'] ?? '', 'assets/img/logo/logo.avif', 'Recommended transparent PNG or WEBP.'); ?>
                                 <?php renderImageUploadField('Footer Logo', 'footer_logo_file', $settings['footerLogo'] ?? '', '', 'Displayed above the footer contact block.'); ?>
                                 <?php renderImageUploadField('Favicon', 'fav_icon_file', $settings['favIcon'] ?? '', 'assets/img/logo/logo.avif', 'Allowed formats: JPG, PNG, GIF, WEBP, AVIF, ICO.'); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portlet light bordered" style="border-left: 4px solid #00f0ff !important;">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-calendar-check-o" style="color: #0284c7;"></i> Order Modes &amp; Modules
+                        </div>
+                        <div class="actions">
+                            <?php if (!empty($settings['enable_standing_orders'])) { ?>
+                                <span class="badge badge-success" style="background:#10b981;font-size:12px;padding:5px 12px;border-radius:12px;"><i class="fa fa-check"></i> Standing Orders Enabled</span>
+                            <?php } else { ?>
+                                <span class="badge badge-warning" style="background:#f59e0b;font-size:12px;padding:5px 12px;border-radius:12px;"><i class="fa fa-lock"></i> Normal Orders Only</span>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <p class="section-note">Enable or disable recurring standing orders across the entire ERP and storefront.</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <div class="col-md-12">
+                                        <div class="well" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:18px;">
+                                            <label style="font-weight:700; font-size:15px; cursor:pointer; color:#0f172a;">
+                                                <input type="checkbox" name="enable_standing_orders" value="1" <?php echo !empty($settings['enable_standing_orders']) ? 'checked' : ''; ?> style="transform:scale(1.3); margin-right:10px;">
+                                                Enable Standing Orders (Recurring B2B Weekly Replenishment)
+                                            </label>
+                                            <p style="margin: 8px 0 0 26px; color:#64748b; font-size:13px; line-height:1.5;">
+                                                <strong>When Disabled (Recommended for Standard Retail):</strong> The system operates exclusively in <em>Normal / Standard Ordering</em> mode. All Standing Order menus, bulk upload tools, customer recurring schedules, and run-sheets are hidden from the navigation and blocked from direct access across the admin portal.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

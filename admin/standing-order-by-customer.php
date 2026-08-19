@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -9,6 +9,11 @@ include('include/database.php');
 include('include/check_login.php');
 
 $db = new Database();
+
+if (function_exists('isStandingOrdersEnabled') && !isStandingOrdersEnabled($db)) {
+    header('Location: manage-orders.php?notice=standing_orders_disabled');
+    exit;
+}
 
 // Get parameters
 $selected_year = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');

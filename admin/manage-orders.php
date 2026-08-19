@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 ob_start();
 error_reporting (E_ALL ^ E_NOTICE);
 if (session_status() === PHP_SESSION_NONE) {
@@ -521,7 +521,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         </div>
                     </div>
 
-                    <!-- Top Row: Calendar + Stats -->
+                    <?php if (isset($_GET['notice']) && $_GET['notice'] === 'standing_orders_disabled') { ?>
+                    <div class="alert alert-info alert-dismissible" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; border-radius:10px; padding:14px 18px; margin-bottom:18px;">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <i class="fa fa-info-circle"></i> <strong>Standing Orders Disabled:</strong> The system is currently operating in <strong>Normal / Standard Ordering</strong> mode. You can re-enable recurring weekly standing orders anytime in <a href="manage-settings.php" style="color:#0284c7;font-weight:700;text-decoration:underline;">Settings &rarr; Order Modes</a>.
+                    </div>
+                    <?php } ?>
                     <div class="mo-top-row">
                         <!-- Calendar Card -->
                         <div class="mo-card">

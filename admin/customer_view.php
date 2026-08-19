@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ob_start();
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -809,9 +809,11 @@ if ($db) {
                             <li>
                                 <a href="#tab_sales" data-toggle="tab" aria-expanded="false">Customer Sales</a>
                             </li>
+                            <?php if (function_exists('isStandingOrdersEnabled') ? isStandingOrdersEnabled($db) : true) { ?>
                             <li>
                                 <a href="#tab_standing" data-toggle="tab" aria-expanded="false">Standing Orders</a>
                             </li>
+                            <?php } ?>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab_profile">

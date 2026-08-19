@@ -24,6 +24,7 @@ $canOrders = function_exists('hasAnyPermission') ? hasAnyPermission([
     'orders.create',
     'orders.view'
 ]) : true;
+$isStandingOrderActive = function_exists('isStandingOrdersEnabled') ? isStandingOrdersEnabled($db ?? null) : false;
 $canProduct = function_exists('hasAnyPermission') ? hasAnyPermission([
     'product.*',
     'product.create',
@@ -31,6 +32,7 @@ $canProduct = function_exists('hasAnyPermission') ? hasAnyPermission([
     'product.price_map',
     'product.standing_orders'
 ]) : true;
+$canStandingOrders = $isStandingOrderActive && (function_exists('hasPermission') ? hasPermission('product.standing_orders') : true);
 $canItemMaster = function_exists('hasAnyPermission') ? hasAnyPermission([
     'item_master.*',
     'item_master.group.create',
@@ -168,9 +170,11 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
                 <?php if (function_exists('hasPermission') ? hasPermission('orders.view') : true) { ?><li><a href="manage-orders.php"><i class="fa fa-list"></i> Manage Orders</a></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('orders.view') : true) { ?><li><a href="manage-invoices.php"><i class="fa fa-file-invoice"></i> Manage Invoices</a></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('orders.view') : true) { ?><li><a href="order-calendar.php"><i class="fa fa-calendar"></i> Order Calendar</a></li><?php } ?>
+                <?php if ($canStandingOrders) { ?>
                 <li class="divider"></li>
-                <?php if (function_exists('hasPermission') ? hasPermission('product.standing_orders') : true) { ?><li><a href="standing-order.php"><i class="fa fa-calendar-check-o"></i> Standing Orders</a></li><?php } ?>
-                <?php if (function_exists('hasPermission') ? hasPermission('product.standing_orders') : true) { ?><li><a href="standing-order-bulk-upload.php"><i class="fa fa-upload"></i> Standing Order Bulk Upload</a></li><?php } ?>
+                <li><a href="standing-order.php"><i class="fa fa-calendar-check-o"></i> Standing Orders</a></li>
+                <li><a href="standing-order-bulk-upload.php"><i class="fa fa-upload"></i> Standing Order Bulk Upload</a></li>
+                <?php } ?>
             </ul>
         </li>
         <?php } ?>
@@ -270,8 +274,10 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
                     <a href="javascript:;"><i class="fa fa-shopping-basket"></i> Orders </a>
                     <ul class="dropdown-menu">
                         <li><a href="pending-orders.php"><i class="fa fa-clock-o"></i> Pending Orders</a></li>
+                        <?php if ($canStandingOrders) { ?>
                         <li><a href="total-standing-orders.php"><i class="fa fa-calendar"></i> Total Standing Orders</a></li>
                         <li><a href="standing-order-by-customer.php"><i class="fa fa-user"></i> Standing Order by Customer</a></li>
+                        <?php } ?>
                         <li><a href="cart-order-by-customer.php"><i class="fa fa-shopping-cart"></i> Cart Order by Customer</a></li>
                         <li><a href="manage-orders.php"><i class="fa fa-file-text-o"></i> Total Orders</a></li>
                         <li><a href="orders-per-item.php"><i class="fa fa-cube"></i> Orders Per Item</a></li>
@@ -318,7 +324,7 @@ $canSettings = function_exists('hasAnyPermission') ? hasAnyPermission([
         <li class="menu-dropdown classic-menu-dropdown " style="background-color: #090d16;">
             <a href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown"> Settings <i class="fa fa-angle-down"></i> </a>
             <ul class="dropdown-menu pull-left">
-                <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="manage-settings.php"><i class="fa fa-cogs"></i> Front Web Settings</a></li><?php } ?>
+                <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="manage-settings.php"><i class="fa fa-cogs"></i> Store &amp; Order Settings</a></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="payment_terms.php"><i class="fa fa-calendar-check-o"></i> Payment Terms</a></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="invoice-settings.php"><i class="fa fa-file-text-o"></i> Invoice/Receipt Settings</a></li><?php } ?>
                 <?php if (function_exists('hasPermission') ? hasPermission('settings.permissions') : true) { ?><li><a href="business-unit-cutoff-settings.php"><i class="fa fa-clock-o"></i> Business Unit Cutoff Settings</a></li><?php } ?>

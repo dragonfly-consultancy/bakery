@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ob_start();
 error_reporting (E_ALL ^ E_NOTICE);
 
@@ -305,7 +305,9 @@ else
                                                             <i class="fa fa-shopping-cart"></i> <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-right">
+                                                            <?php if (function_exists('isStandingOrdersEnabled') ? isStandingOrdersEnabled($db) : true) { ?>
                                                             <li><a href="standing-order.php?customer_id=<?php echo $categoryid; ?>"><i class="fa fa-calendar"></i> Standing Order</a></li>
+                                                            <?php } ?>
                                                             <li><a href="cart-order.php?customer_id=<?php echo $categoryid; ?>"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                                                             <li><a href="customer_view.php?customerID=<?php echo $categoryid; ?>"><i class="fa fa-money"></i> Credits</a></li>
                                                             <li><a href="manage-orders.php?customer_id=<?php echo $categoryid; ?>"><i class="fa fa-list"></i> Total Orders</a></li>

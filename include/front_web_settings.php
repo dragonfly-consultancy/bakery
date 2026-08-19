@@ -28,7 +28,8 @@ if (!function_exists('generalSettingsDefaults')) {
             'address' => '45 Industrial Parkway, Sector 4, Tech Zone, VIC 3000',
             'maintainMode' => 0,
             'system_email' => 'sales@voltixelectricals.com',
-            'contactUs' => '+61 3 9876 5432'
+            'contactUs' => '+61 3 9876 5432',
+            'enable_standing_orders' => 0
         );
     }
 }
